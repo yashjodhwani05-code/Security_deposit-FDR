@@ -3,2197 +3,1109 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SIH26265 — AICTE Security Deposit & FDR Lifecycle Control Tower</title>
-  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>AICTE — Security Deposit & FDR Lifecycle Control Tower</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: #f8fafc;
-      color: #0f172a;
-    }
-    .mono {
-      font-family: 'JetBrains Mono', monospace;
-    }
-    .custom-scroll::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    .custom-scroll::-webkit-scrollbar-track {
-      background: #f1f5f9;
-    }
-    .custom-scroll::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 9999px;
-    }
-    @keyframes pulse-ring {
-      0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.45); }
-      70% { box-shadow: 0 0 0 8px rgba(79, 70, 229, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
-    }
-    .demo-active-pill {
-      animation: pulse-ring 2s infinite;
-    }
+    body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #0f172a; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .diff-mismatch { background-color: #fef2f2; border-color: #f87171; color: #991b1b; }
+    .diff-match { background-color: #f0fdf4; border-color: #86efac; color: #166534; }
+    .tab-active { border-bottom: 3px solid #1d4ed8; color: #1e40af; font-weight: 700; background-color: #eff6ff; }
+    @keyframes pulse-subtle { 0%, 100% { opacity: 1; } 50% { opacity: 0.65; } }
+    .pulse-live { animation: pulse-subtle 2s infinite; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col bg-slate-50 text-slate-900">
+<body class="min-h-screen flex flex-col">
 
-  <!-- Top Header: AICTE SIH26265 Control Tower -->
-  <header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-30">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
+  <!-- Top Official Header -->
+  <header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-40 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center font-bold text-lg shadow-inner">
-          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-          </svg>
+        <div class="w-10 h-10 rounded-lg bg-amber-500 flex items-center justify-center font-extrabold text-slate-950 text-lg shadow">
+          🏛️
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <span class="px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 rounded">SIH26265 Prototype</span>
-            <span class="text-xs text-slate-400 hidden sm:inline">AICTE Financial-Compliance Control Tower</span>
+            <span class="text-xs font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-400/30">AICTE Regulation Bureau</span>
+            <span class="text-xs text-emerald-300 flex items-center gap-1 font-medium">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-live"></span> 256-Bit SHA-256 Vault Active
+            </span>
           </div>
-          <h1 class="text-base sm:text-lg font-bold tracking-tight text-white">FDR Passport & Security Deposit Lifecycle Portal</h1>
+          <h1 class="text-base sm:text-lg font-bold tracking-tight text-white">Security Deposit & FDR Lifecycle Control Tower</h1>
         </div>
       </div>
 
-      <!-- Role Switcher & Quick Actions -->
-      <div class="flex flex-wrap items-center gap-2">
-        <div class="flex items-center bg-slate-800 p-1 rounded-lg border border-slate-700">
-          <span class="text-[11px] text-slate-400 px-2 font-medium hidden md:inline">Active Role:</span>
-          <button id="roleBtnInstitution" type="button" class="px-2.5 py-1.5 rounded-md text-xs font-semibold transition">
-            Institution Workspace
-          </button>
-          <button id="roleBtnOfficer" type="button" class="px-2.5 py-1.5 rounded-md text-xs font-semibold transition">
-            Verification Officer
-          </button>
-          <button id="roleBtnBureau" type="button" class="px-2.5 py-1.5 rounded-md text-xs font-semibold transition">
-            AICTE Regulation Bureau
-          </button>
+      <!-- Role Switcher & Production Actions -->
+      <div class="flex items-center gap-3">
+        <div class="bg-slate-800 p-1 rounded-lg border border-slate-700 flex items-center text-xs">
+          <span class="px-2 text-slate-400 font-medium">Portal Role:</span>
+          <button id="roleBtnOfficer" onclick="setRole('officer')" class="px-2.5 py-1 rounded-md font-semibold bg-blue-600 text-white transition">AICTE Scrutiny Officer</button>
+          <button id="roleBtnInstitute" onclick="setRole('institute')" class="px-2.5 py-1 rounded-md font-semibold text-slate-300 hover:text-white transition">Institution Nodal Officer</button>
         </div>
-
-        <button id="btnResetDemo" type="button" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">
-          Reset Data
+        <button onclick="exportRegistryCSV()" class="text-xs px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-600 text-white border border-emerald-500 font-semibold transition flex items-center gap-1.5 shadow-sm">
+          <span>⬇</span> Export Registry CSV
         </button>
       </div>
     </div>
 
-    <!-- Interactive 7-Step Hackathon Demo Walkthrough Bar -->
-    <div class="bg-indigo-950/90 border-t border-indigo-800/60">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-2.5">
-        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-amber-400/20 text-amber-300 border border-amber-400/30">
-              7-Step Hackathon Demo Flow
-            </span>
-            <span id="demoStepDescription" class="text-xs text-indigo-100 font-medium">
-              Click any step below or press "Run Next Demo Step" to experience the complete end-to-end lifecycle.
-            </span>
-          </div>
-          <div class="flex items-center gap-2">
-            <button id="btnPrevDemoStep" type="button" class="px-2.5 py-1 rounded bg-indigo-900 hover:bg-indigo-800 text-indigo-200 text-xs font-medium border border-indigo-700 transition">
-              ← Prev
-            </button>
-            <button id="btnNextDemoStep" type="button" class="px-3 py-1 rounded bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-bold shadow transition">
-              Run Next Demo Step →
-            </button>
-          </div>
+    <!-- System Integrity & Compliance Strip -->
+    <div class="bg-slate-950/90 border-t border-slate-800/80">
+      <div class="max-w-7xl mx-auto px-4 py-2 flex flex-wrap items-center justify-between gap-2 text-xs">
+        <div class="flex items-center gap-4 flex-wrap">
+          <span class="font-semibold text-slate-300 flex items-center gap-1.5">
+            <span class="text-emerald-400">●</span> Integrity Hash: <span class="mono text-slate-400">SHA-256 Verified</span>
+          </span>
+          <span class="text-slate-600">|</span>
+          <span class="text-slate-300">
+            Verification Separation: <strong class="text-amber-300">Extracted</strong> → <strong class="text-blue-300">Screened</strong> → <strong class="text-emerald-300">Bank-Confirmed</strong>
+          </span>
+          <span class="text-slate-600 hidden sm:inline">|</span>
+          <span class="text-slate-300 hidden sm:inline">
+            Geo-Audit Tagging: <strong class="text-indigo-300" id="headerGeoBadge">22.7196° N, 75.8577° E (Verified)</strong>
+          </span>
         </div>
-
-        <div id="demoStepperContainer" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-1.5">
-          <!-- Populated dynamically via JS -->
+        <div class="flex items-center gap-2">
+          <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700 mono text-[11px]">FY 2026-27 Compliance Cycle</span>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- Main Content Area -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 space-y-6">
+  <!-- Main Content Container -->
+  <main class="max-w-7xl mx-auto w-full px-4 py-5 flex-1 space-y-5">
 
-    <!-- Top KPI Summary Strip -->
-    <section class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3" id="kpiStrip">
-      <!-- Populated dynamically -->
+    <!-- KPI Summary Strip -->
+    <section class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+      <div onclick="filterByBucket('ALL')" class="cursor-pointer bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm hover:border-blue-400 transition">
+        <div class="text-xs font-medium text-slate-500">Total Active FDRs</div>
+        <div class="text-2xl font-extrabold text-slate-900 mt-1" id="kpiTotal">8</div>
+        <div class="text-[11px] text-slate-500 mt-0.5">₹14.85 Cr Total Corpus</div>
+      </div>
+      <div onclick="filterByBucket('30')" class="cursor-pointer bg-red-50/70 p-3.5 rounded-xl border border-red-200 shadow-sm hover:border-red-400 transition">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-red-800">Maturing ≤ 30d</span>
+          <span class="px-1.5 py-0.5 text-[10px] font-bold bg-red-200 text-red-900 rounded">CRITICAL</span>
+        </div>
+        <div class="text-2xl font-extrabold text-red-700 mt-1" id="kpi30">2</div>
+        <div class="text-[11px] text-red-600 mt-0.5">Auto-escalation active</div>
+      </div>
+      <div onclick="filterByBucket('60')" class="cursor-pointer bg-amber-50/70 p-3.5 rounded-xl border border-amber-200 shadow-sm hover:border-amber-400 transition">
+        <div class="text-xs font-bold text-amber-800">Maturing 31–60d</div>
+        <div class="text-2xl font-extrabold text-amber-700 mt-1" id="kpi60">1</div>
+        <div class="text-[11px] text-amber-700 mt-0.5">Notice dispatched</div>
+      </div>
+      <div onclick="filterByBucket('90')" class="cursor-pointer bg-blue-50/70 p-3.5 rounded-xl border border-blue-200 shadow-sm hover:border-blue-400 transition">
+        <div class="text-xs font-bold text-blue-800">Maturing 61–90d</div>
+        <div class="text-2xl font-extrabold text-blue-700 mt-1" id="kpi90">1</div>
+        <div class="text-[11px] text-blue-600 mt-0.5">Early reminder queue</div>
+      </div>
+      <div onclick="filterByBucket('OVERDUE')" class="cursor-pointer bg-rose-50 p-3.5 rounded-xl border border-rose-300 shadow-sm hover:border-rose-500 transition">
+        <div class="text-xs font-bold text-rose-900">Overdue / Unrenewed</div>
+        <div class="text-2xl font-extrabold text-rose-700 mt-1" id="kpiOverdue">1</div>
+        <div class="text-[11px] text-rose-700 mt-0.5">Action required</div>
+      </div>
+      <div onclick="switchTab('release')" class="cursor-pointer bg-emerald-50/70 p-3.5 rounded-xl border border-emerald-200 shadow-sm hover:border-emerald-400 transition">
+        <div class="text-xs font-bold text-emerald-800">Pending Releases</div>
+        <div class="text-2xl font-extrabold text-emerald-700 mt-1" id="kpiReleases">3</div>
+        <div class="text-[11px] text-emerald-700 mt-0.5">SLA tracked workflows</div>
+      </div>
     </section>
 
-    <!-- Primary Navigation Tabs inside Current Role -->
-    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 pb-3">
-      <div class="flex flex-wrap items-center gap-1.5" id="workspaceNavTabs">
-        <button data-tab="institution" type="button" class="nav-tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition">
-          1. Institution Workspace & OCR Upload
+    <!-- Navigation Tabs -->
+    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+      <div class="flex overflow-x-auto border-b border-slate-200 text-xs sm:text-sm">
+        <button id="tabBtn_intake" onclick="switchTab('intake')" class="px-5 py-3.5 font-semibold whitespace-nowrap transition tab-active flex items-center gap-2">
+          <span>1. Digital FDR Intake & Reconciliation</span>
+          <span class="px-1.5 py-0.5 text-[10px] rounded bg-blue-100 text-blue-800 font-bold">OCR + Verify</span>
         </button>
-        <button data-tab="verification" type="button" class="nav-tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition">
-          2. Verification & Fraud Engine
+        <button id="tabBtn_ledger" onclick="switchTab('ledger')" class="px-5 py-3.5 font-semibold text-slate-600 hover:text-slate-900 whitespace-nowrap transition flex items-center gap-2">
+          <span>2. Master FDR Registry & Maturity Watch</span>
+          <span class="px-1.5 py-0.5 text-[10px] rounded bg-slate-100 text-slate-700 font-bold" id="ledgerCountBadge">8</span>
         </button>
-        <button data-tab="controltower" type="button" class="nav-tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition">
-          3. Smart Maturity Control Tower
+        <button id="tabBtn_renewal" onclick="switchTab('renewal')" class="px-5 py-3.5 font-semibold text-slate-600 hover:text-slate-900 whitespace-nowrap transition flex items-center gap-2">
+          <span>3. Continuity-Preserving Renewal Chain</span>
+          <span class="px-1.5 py-0.5 text-[10px] rounded bg-purple-100 text-purple-800 font-bold">Linked History</span>
         </button>
-        <button data-tab="refunds" type="button" class="nav-tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition">
-          4. Release / Refund & SLA Tracker
+        <button id="tabBtn_release" onclick="switchTab('release')" class="px-5 py-3.5 font-semibold text-slate-600 hover:text-slate-900 whitespace-nowrap transition flex items-center gap-2">
+          <span>4. Release & Refund Authorization</span>
+          <span class="px-1.5 py-0.5 text-[10px] rounded bg-emerald-100 text-emerald-800 font-bold">5-Stage SLA</span>
         </button>
-        <button data-tab="compliance" type="button" class="nav-tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition">
-          5. Regulation Bureau & Compliance Scores
+        <button id="tabBtn_audit" onclick="switchTab('audit')" class="px-5 py-3.5 font-semibold text-slate-600 hover:text-slate-900 whitespace-nowrap transition flex items-center gap-2">
+          <span>5. Immutable Audit Log & Exceptions</span>
+          <span class="px-1.5 py-0.5 text-[10px] rounded bg-amber-100 text-amber-800 font-bold" id="auditCountBadge">6</span>
         </button>
       </div>
 
-      <!-- Search & Lifecycle Status Filter -->
-      <div class="flex flex-wrap items-center gap-2">
-        <div class="relative">
-          <input id="globalSearchInput" type="text" placeholder="Search FDR #, Institution, Bank..." class="pl-8 pr-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 w-52 sm:w-64" />
-          <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-          </svg>
+      <!-- TAB 1: INTAKE & RECONCILIATION WORKBENCH -->
+      <div id="tab_intake" class="p-5 space-y-5">
+        <!-- Document Upload & Pending Queue Bar -->
+        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 class="text-sm font-bold text-slate-900">Automated FDR Document Ingestion & Discrepancy Engine</h2>
+            <p class="text-xs text-slate-600">Upload a scanned Fixed Deposit Receipt (PDF/Image) or select a pending submission from the institutional intake queue.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <label class="cursor-pointer text-xs px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-sm transition flex items-center gap-1.5">
+              <span>📤 Upload Instrument PDF/Scan</span>
+              <input type="file" accept=".pdf,image/*" class="hidden" onchange="handleDirectFileUpload(event)" />
+            </label>
+            <span class="text-xs font-semibold text-slate-400 px-1">Queue:</span>
+            <button onclick="loadSampleCase('mismatch')" class="text-xs px-3 py-1.5 rounded-lg bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 font-semibold transition">
+              📄 SBI_FDR_99412.pdf
+            </button>
+            <button onclick="loadSampleCase('renewal')" class="text-xs px-3 py-1.5 rounded-lg bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 font-semibold transition">
+              📄 PNB_Renewal_2026.pdf
+            </button>
+            <button onclick="loadSampleCase('clean')" class="text-xs px-3 py-1.5 rounded-lg bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 font-semibold transition">
+              📄 HDFC_FDR_88301.pdf
+            </button>
+          </div>
         </div>
-        <select id="globalStatusFilter" class="px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
-          <option value="ALL">All Lifecycle States</option>
-          <option value="Active">Active</option>
-          <option value="Nearing Maturity">Nearing Maturity</option>
-          <option value="Matured">Matured</option>
-          <option value="Renewed">Renewed</option>
-          <option value="Under Review">Under Review</option>
-          <option value="Discrepancy-Flagged">Discrepancy-Flagged</option>
-          <option value="Released">Released</option>
-          <option value="Refunded">Refunded</option>
-        </select>
-      </div>
-    </div>
 
-    <!-- TAB 1: INSTITUTION WORKSPACE & AI-ASSISTED OCR UPLOAD -->
-    <section id="tabPanel_institution" class="space-y-6">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <!-- Left Column: AI-Assisted FDR Upload & OCR Extraction Pipeline -->
-        <div class="lg:col-span-5 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-          <div class="bg-slate-900 text-white px-5 py-3.5 flex items-center justify-between">
+        <!-- 3-Layer Verification Status Stepper -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div id="vLayer1" class="p-3.5 rounded-xl border-2 border-blue-500 bg-blue-50/40 flex items-start gap-3">
+            <div class="w-7 h-7 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">1</div>
             <div>
-              <span class="text-[11px] uppercase tracking-wider text-indigo-300 font-semibold">Idea #2 • AI-Assisted Document Intelligence</span>
-              <h2 class="text-sm font-bold">Submit New / Renewal FDR with OCR + LLM Extraction</h2>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-blue-900">Stage 1: Extracted</span>
+                <span id="vBadge1" class="text-[10px] px-1.5 py-0.5 rounded bg-blue-200 text-blue-900 font-bold">COMPLETED</span>
+              </div>
+              <p class="text-xs text-slate-600 mt-0.5">OCR + Structured Vision-LLM parsed fields with bounding-box confidence scores.</p>
             </div>
-            <span class="px-2 py-0.5 text-[11px] rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 font-mono">OCR Pipeline v2.4</span>
           </div>
 
-          <div class="p-5 space-y-4">
-            <!-- Preset Sample Scanned FDR Loader for Instant Hackathon Demo -->
-            <div class="bg-indigo-50/80 border border-indigo-200 rounded-lg p-3 space-y-2">
+          <div id="vLayer2" class="p-3.5 rounded-xl border-2 border-amber-400 bg-amber-50/40 flex items-start gap-3">
+            <div class="w-7 h-7 rounded-full bg-amber-500 text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">2</div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-amber-900">Stage 2: Screened</span>
+                <span id="vBadge2" class="text-[10px] px-1.5 py-0.5 rounded bg-amber-200 text-amber-900 font-bold">1 DISCREPANCY</span>
+              </div>
+              <p class="text-xs text-slate-600 mt-0.5">Automated rule checks: Joint holder validation, IFSC lookup, tenor & amount reconciliation.</p>
+            </div>
+          </div>
+
+          <div id="vLayer3" class="p-3.5 rounded-xl border border-slate-200 bg-slate-50 flex items-start gap-3">
+            <div class="w-7 h-7 rounded-full bg-slate-300 text-slate-700 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">3</div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-700">Stage 3: Bank-Confirmed</span>
+                <span id="vBadge3" class="text-[10px] px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-bold">AWAITING</span>
+              </div>
+              <p class="text-xs text-slate-500 mt-0.5">Confirmed via SFMS / CBS API or digitally signed Bank Confirmation Letter.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Side-by-Side Document Viewer & Reconciliation Form -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+          <!-- Left: Simulated Scanned FDR Certificate with Bounding Boxes -->
+          <div class="lg:col-span-5 bg-slate-900 rounded-xl p-4 text-white flex flex-col justify-between border border-slate-800 shadow-inner">
+            <div>
+              <div class="flex items-center justify-between border-b border-slate-800 pb-2.5 mb-3">
+                <div class="flex items-center gap-2">
+                  <span class="text-xs font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">OCR Vision Overlay</span>
+                  <span class="text-xs text-slate-400 mono" id="docFileName">SBI_FDR_Scan_099412.pdf</span>
+                </div>
+                <span class="text-[11px] text-slate-400 mono" id="docHashShort">SHA256: 8f94...3b1c</span>
+              </div>
+
+              <!-- Simulated Bank Receipt Visual -->
+              <div class="bg-amber-50/95 text-slate-900 rounded-lg p-4 border-2 border-amber-300 shadow-lg space-y-3 relative font-serif">
+                <div class="flex justify-between items-start border-b border-amber-300 pb-2">
+                  <div>
+                    <div class="text-xs font-bold uppercase tracking-widest text-blue-900 font-sans" id="scanBankTitle">STATE BANK OF INDIA</div>
+                    <div class="text-[11px] text-slate-600 font-sans" id="scanBranchTitle">New Delhi Main Branch • IFSC: SBIN0000691</div>
+                  </div>
+                  <div class="text-right">
+                    <span class="text-[10px] font-sans font-bold px-1.5 py-0.5 bg-amber-200 text-amber-900 rounded">TERM DEPOSIT RECEIPT</span>
+                    <div class="text-xs font-bold mono mt-1 text-slate-800" id="scanFdrNo">FDR No: 39941200841</div>
+                  </div>
+                </div>
+
+                <div class="space-y-2 text-xs font-sans">
+                  <div class="p-1.5 rounded border border-dashed border-blue-500 bg-blue-50/60 flex justify-between">
+                    <span class="text-slate-600">Received From:</span>
+                    <span class="font-bold text-slate-900" id="scanInstName">Apex Institute of Technology & Mgmt</span>
+                  </div>
+                  <div class="p-1.5 rounded border border-dashed border-emerald-600 bg-emerald-50/70 flex justify-between">
+                    <span class="text-slate-600">Account / Lien Status:</span>
+                    <span class="font-bold text-emerald-900" id="scanLienHolder">Joint A/C: Member Secretary, AICTE</span>
+                  </div>
+                  <div class="grid grid-cols-2 gap-2">
+                    <div class="p-1.5 rounded border border-dashed border-red-500 bg-red-50/80">
+                      <div class="text-[10px] text-red-700 font-bold">PRINCIPAL AMOUNT (OCR 99.4%)</div>
+                      <div class="text-sm font-extrabold mono text-red-900" id="scanAmount">₹ 35,00,000</div>
+                    </div>
+                    <div class="p-1.5 rounded border border-dashed border-blue-400 bg-blue-50/50">
+                      <div class="text-[10px] text-slate-500 font-bold">INTEREST & TENOR</div>
+                      <div class="text-sm font-bold mono text-slate-900" id="scanRate">7.25% p.a. (96 Mos)</div>
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-2 gap-2">
+                    <div class="p-1.5 rounded border border-dashed border-blue-400 bg-blue-50/50">
+                      <div class="text-[10px] text-slate-500">ISSUE DATE</div>
+                      <div class="font-bold mono" id="scanIssueDate">2026-10-15</div>
+                    </div>
+                    <div class="p-1.5 rounded border border-dashed border-blue-400 bg-blue-50/50">
+                      <div class="text-[10px] text-slate-500">MATURITY DATE</div>
+                      <div class="font-bold mono" id="scanMatDate">2034-10-15</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pt-2 border-t border-amber-300 flex items-center justify-between text-[10px] font-sans text-slate-500">
+                  <span>Auto-Renewal: <strong class="text-slate-800">DISABLED (Manual Lien)</strong></span>
+                  <span class="text-emerald-800 font-bold">✓ Authorized Signatory Seal</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Automated Pre-Scrutiny Rule Checklist -->
+            <div class="mt-4 bg-slate-950 rounded-lg p-3 border border-slate-800 space-y-2">
               <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-indigo-950">Quick-Load Sample Scanned FDR PDF:</span>
-                <span class="text-[11px] text-indigo-700 font-medium">Simulates OCR + LLM Extraction</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Automated Pre-Scrutiny Rules</span>
+                <span class="text-[11px] font-semibold text-indigo-300" id="geoCaptureLabel">📍 22.7196° N, 75.8577° E</span>
               </div>
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-1.5">
-                <button id="btnSampleMismatch" type="button" class="px-2.5 py-1.5 rounded text-xs font-semibold bg-amber-600 hover:bg-amber-700 text-white shadow-sm transition text-left">
-                  1. Scan w/ Amount Mismatch (Step 1-2)
-                </button>
-                <button id="btnSampleRenewal" type="button" class="px-2.5 py-1.5 rounded text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm transition text-left">
-                  2. Renewal FDR Scan (Step 6)
-                </button>
-                <button id="btnSampleClean" type="button" class="px-2.5 py-1.5 rounded text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition text-left">
-                  3. Clean Verified SBI Scan
-                </button>
-              </div>
+              <div id="ruleChecklist" class="space-y-1.5 text-xs"></div>
             </div>
-
-            <!-- Simulated OCR Extraction Confidence Banner -->
-            <div id="ocrExtractionBanner" class="hidden rounded-lg p-3.5 border space-y-2">
-              <!-- Populated when OCR runs -->
-            </div>
-
-            <!-- Form Fields -->
-            <form id="fdrUploadForm" class="space-y-3">
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label class="block text-xs font-semibold text-slate-700 mb-1">Institution Name & AICTE ID</label>
-                  <select id="formInstitutionId" class="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg bg-white">
-                    <option value="INST-101">INST-101 • Apex Institute of Technology (West)</option>
-                    <option value="INST-102">INST-102 • Vidya Bharati College of Pharmacy (North)</option>
-                    <option value="INST-103">INST-103 • Dakshin Regional School of Management (South)</option>
-                    <option value="INST-104">INST-104 • Eastern Frontier Engineering College (East)</option>
-                  </select>
-                </div>
-                <div>
-                  <label class="block text-xs font-semibold text-slate-700 mb-1">Submission Type</label>
-                  <select id="formSubmissionType" class="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg bg-white">
-                    <option value="NEW">New Security Deposit FDR</option>
-                    <option value="RENEWAL">Renewal / Replacement FDR (Link to Parent)</option>
-                  </select>
-                </div>
-              </div>
-
-              <div id="parentFdrSelectWrapper" class="hidden bg-amber-50 border border-amber-200 rounded-lg p-2.5">
-                <label class="block text-xs font-semibold text-amber-900 mb-1">Link to Expiring / Matured Parent FDR (Preserves Lineage)</label>
-                <select id="formParentFdrId" class="w-full px-3 py-1.5 text-xs border border-amber-300 rounded bg-white">
-                  <!-- Populated dynamically -->
-                </select>
-              </div>
-
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label class="block text-xs font-semibold text-slate-700 mb-1">Issuing Bank Name</label>
-                  <input id="formBankName" type="text" required value="State Bank of India" class="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg" />
-                </div>
-                <div>
-                  <label class="block text-xs font-semibold text-slate-700 mb-1">Branch & IFSC Code</label>
-                  <input id="formIfsc" type="text" required value="SBIN0004821 • Indore Main" class="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg mono" />
-                </div>
-              </div>
-
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label class="block text-xs font-semibold text-slate-700 mb-1">FDR Account / Receipt No.</label>
-                  <input id="formFdrNumber" type="text" required value="SBI-FDR-2026-99412" class="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg mono" />
-                </div>
-                <div>
-                  <label class="block text-xs font-semibold text-slate-700 mb-1">Claimed Deposit Amount (₹)</label>
-                  <input id="formClaimedAmount" type="number" required value="3500000" class="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg mono" />
-                </div>
-              </div>
-
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label class="block text-xs font-semibold text-slate-700 mb-1">OCR Extracted Scan Amount (₹)</label>
-                  <input id="formOcrAmount" type="number" required value="3000000" class="w-full px-3 py-2 text-xs border border-amber-400 bg-amber-50/50 rounded-lg mono" />
-                  <span class="text-[10px] text-slate-500">Extracted from uploaded PDF scan by OCR+LLM</span>
-                </div>
-                <div>
-                  <label class="block text-xs font-semibold text-slate-700 mb-1">Joint Holder / Lien Nominee</label>
-                  <input id="formNominee" type="text" required value="Member Secretary, AICTE + Principal" class="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg" />
-                </div>
-              </div>
-
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label class="block text-xs font-semibold text-slate-700 mb-1">Issue Date</label>
-                  <input id="formIssueDate" type="date" required value="2026-10-01" class="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg" />
-                </div>
-                <div>
-                  <label class="block text-xs font-semibold text-slate-700 mb-1">Maturity Date</label>
-                  <input id="formMaturityDate" type="date" required value="2034-10-01" class="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg" />
-                </div>
-              </div>
-
-              <div class="pt-2 flex items-center justify-between gap-2">
-                <button id="btnRunOcrCheck" type="button" class="px-3 py-2 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 transition">
-                  Re-Run AI OCR Check
-                </button>
-                <button type="submit" class="flex-1 py-2 px-4 rounded-lg text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow transition">
-                  Submit FDR & Mint Digital Passport →
-                </button>
-              </div>
-            </form>
           </div>
-        </div>
 
-        <!-- Right Column: Institution FDR Portfolio & Digital Passports -->
-        <div class="lg:col-span-7 space-y-4">
-          <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-            <div class="px-5 py-3.5 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
-              <div>
-                <span class="text-[11px] uppercase tracking-wider text-indigo-600 font-semibold">Idea #1 • Digital FDR Passport Registry</span>
-                <h2 class="text-sm font-bold text-slate-900">Active & Historical Security Deposit Receipts</h2>
+          <!-- Right: Field-by-Field Reconciliation Table -->
+          <div class="lg:col-span-7 bg-white rounded-xl border border-slate-200 p-4 flex flex-col justify-between">
+            <div>
+              <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-200">
+                <div>
+                  <h3 class="text-sm font-bold text-slate-900">Field-by-Field Reconciliation Workbench</h3>
+                  <p class="text-xs text-slate-500">Compares Institute Portal Declaration against OCR-Extracted Scan Values</p>
+                </div>
+                <div class="flex items-center gap-2">
+                  <button onclick="refreshLiveGPS()" class="text-xs px-2.5 py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold border border-indigo-200 transition">
+                    📍 Refresh GPS
+                  </button>
+                  <button onclick="acceptAllOCR()" class="text-xs px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold transition">
+                    Sync Portal Form to Scan Values
+                  </button>
+                </div>
               </div>
-              <span class="text-xs text-slate-500">Click "FDR Passport" on any record for QR ID, Lineage & Immutable Log</span>
+
+              <!-- Comparison Table -->
+              <div class="overflow-x-auto mt-3">
+                <table class="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr class="border-b border-slate-200 text-slate-500 uppercase">
+                      <th class="py-2 px-2.5">Instrument Field</th>
+                      <th class="py-2 px-2.5">Portal Form (Declared)</th>
+                      <th class="py-2 px-2.5">Scanned FDR (OCR)</th>
+                      <th class="py-2 px-2.5">Confidence</th>
+                      <th class="py-2 px-2.5">Status / Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="reconcileTableBody" class="divide-y divide-slate-200"></tbody>
+                </table>
+              </div>
             </div>
 
-            <div class="overflow-x-auto">
-              <table class="w-full text-left border-collapse">
-                <thead>
-                  <tr class="bg-slate-50 border-b border-slate-200 text-[11px] font-semibold text-slate-600 uppercase">
-                    <th class="py-2.5 px-4">FDR Passport / Receipt</th>
-                    <th class="py-2.5 px-3">Institution & Bank</th>
-                    <th class="py-2.5 px-3 text-right">Claimed vs. Bank</th>
-                    <th class="py-2.5 px-3">Maturity</th>
-                    <th class="py-2.5 px-3">Bank Badge</th>
-                    <th class="py-2.5 px-3">Lifecycle State</th>
-                    <th class="py-2.5 px-4 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="institutionFdrTableBody" class="divide-y divide-slate-200 text-xs">
-                  <!-- Populated dynamically -->
-                </tbody>
-              </table>
+            <!-- Officer Decision Bar -->
+            <div class="mt-4 pt-3 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3 bg-slate-50 p-3 rounded-lg">
+              <div class="text-xs">
+                <span class="font-bold text-slate-700">Verification Gate:</span>
+                <span id="intakeGateMessage" class="text-red-600 font-medium ml-1">1 discrepancy detected between Portal Form and Scanned FDR.</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="raiseDiscrepancyQuery()" class="text-xs px-3 py-2 rounded-lg bg-red-100 hover:bg-red-200 text-red-800 font-semibold transition">
+                  Flag Deficiency to Institute
+                </button>
+                <button onclick="markBankConfirmed()" class="text-xs px-3 py-2 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-900 font-semibold transition">
+                  Record Bank Confirmation (CBS/Letter)
+                </button>
+                <button onclick="commitIntakeToLedger()" class="text-xs px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow transition">
+                  Approve & Commit to Registry →
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
 
-    <!-- TAB 2: VERIFICATION WORKSPACE & FRAUD / ANOMALY ENGINE -->
-    <section id="tabPanel_verification" class="hidden space-y-6">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <!-- Left 8 Cols: Side-by-Side Claimed vs Bank-Confirmed Verification Queue -->
-        <div class="lg:col-span-8 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-          <div class="bg-slate-900 text-white px-5 py-3.5 flex flex-wrap items-center justify-between gap-2">
-            <div>
-              <span class="text-[11px] uppercase tracking-wider text-amber-300 font-semibold">Idea #3 • Bank-Verified Status Layer</span>
-              <h2 class="text-sm font-bold">AICTE Officer Verification Queue: Claimed by Institution vs. Confirmed by Bank</h2>
-            </div>
-            <span class="text-xs text-slate-300">Distinguishes self-reported data from bank-confirmed records</span>
+      <!-- TAB 2: MASTER FDR REGISTRY & MATURITY WATCH -->
+      <div id="tab_ledger" class="p-5 space-y-4 hidden">
+        <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+          <div class="flex flex-wrap items-center gap-2">
+            <input id="searchInput" oninput="renderLedger()" type="text" placeholder="Search FDR No., Institute, Bank, IFSC..." class="text-xs px-3 py-2 rounded-lg border border-slate-300 bg-white w-64 focus:outline-none focus:border-blue-500" />
+            <select id="bucketFilter" onchange="renderLedger()" class="text-xs px-3 py-2 rounded-lg border border-slate-300 bg-white font-medium">
+              <option value="ALL">All Maturity Horizons</option>
+              <option value="30">Maturing ≤ 30 Days (Critical)</option>
+              <option value="60">Maturing 31–60 Days</option>
+              <option value="90">Maturing 61–90 Days</option>
+              <option value="OVERDUE">Overdue / Unrenewed</option>
+            </select>
+            <select id="verifyFilter" onchange="renderLedger()" class="text-xs px-3 py-2 rounded-lg border border-slate-300 bg-white font-medium">
+              <option value="ALL">All Verification Tiers</option>
+              <option value="Bank-Confirmed">Stage 3: Bank-Confirmed</option>
+              <option value="Screened">Stage 2: Screened</option>
+              <option value="Extracted">Stage 1: Extracted</option>
+            </select>
           </div>
-
-          <div class="p-4 space-y-4" id="verificationQueueContainer">
-            <!-- Populated dynamically -->
-          </div>
-        </div>
-
-        <!-- Right 4 Cols: Idea #5 Lightweight Fraud & Anomaly Detection Rules Engine -->
-        <div class="lg:col-span-4 space-y-4">
-          <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-            <div class="bg-rose-950 text-white px-5 py-3.5">
-              <span class="text-[11px] uppercase tracking-wider text-rose-300 font-semibold">Idea #5 • Fraud & Anomaly Detection</span>
-              <h2 class="text-sm font-bold">Automated Pre-ML Rule Engine Checks</h2>
-            </div>
-            <div class="p-4 space-y-3" id="fraudRuleListContainer">
-              <!-- Populated dynamically with all 6 PDF rules -->
-            </div>
-          </div>
-
-          <!-- Manual Verification Evidence Capture Box -->
-          <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 space-y-3">
-            <div class="flex items-center justify-between">
-              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700">Manual Bank Verification Fallback</h3>
-              <span class="px-2 py-0.5 text-[10px] rounded bg-slate-100 text-slate-700 font-semibold">Non-API Banks</span>
-            </div>
-            <p class="text-xs text-slate-600">
-              When an issuing bank lacks a live CBS verification API, officers record signed bank confirmation letters / email evidence before marking an instrument <span class="font-semibold text-emerald-700">Bank-confirmed</span>.
-            </p>
-            <div class="space-y-2">
-              <select id="manualVerifyFdrSelect" class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg bg-white"></select>
-              <input id="manualVerifyRefInput" type="text" placeholder="Bank Confirmation Letter Ref # / Official Email ID" value="SBI/IND/CONF/2026/8841" class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg mono" />
-              <button id="btnRecordManualEvidence" type="button" class="w-full py-2 px-3 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white transition">
-                Capture Bank Evidence & Mark Bank-Confirmed
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TAB 3: SMART MATURITY & RENEWAL CONTROL TOWER -->
-    <section id="tabPanel_controltower" class="hidden space-y-6">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <!-- Decision-Support Automated Rules Table (From Page 2 of PDF) -->
-        <div class="lg:col-span-7 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-          <div class="bg-slate-900 text-white px-5 py-3.5 flex items-center justify-between">
-            <div>
-              <span class="text-[11px] uppercase tracking-wider text-indigo-300 font-semibold">Idea #4 • Smart Maturity & Renewal Control Tower</span>
-              <h2 class="text-sm font-bold">Decision-Support Signal → Automated Action Matrix</h2>
-            </div>
-            <button id="btnTriggerAllMaturityScans" type="button" class="px-3 py-1 rounded bg-indigo-600 hover:bg-indigo-500 text-xs font-semibold text-white transition">
-              Run 90/60/30-Day Sweep
+          <div class="flex items-center gap-2">
+            <button onclick="triggerBulkAlerts()" class="text-xs px-3 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold shadow-sm transition">
+              🔔 Dispatch 90/60/30-Day Maturity Notices
             </button>
           </div>
-          <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse text-xs">
-              <thead>
-                <tr class="bg-slate-50 border-b border-slate-200 text-[11px] font-semibold text-slate-600 uppercase">
-                  <th class="py-2.5 px-4">Control Tower Signal</th>
-                  <th class="py-2.5 px-3">Automated System Action</th>
-                  <th class="py-2.5 px-3">Matching Records</th>
-                  <th class="py-2.5 px-4 text-right">Execute</th>
-                </tr>
-              </thead>
-              <tbody id="controlTowerSignalBody" class="divide-y divide-slate-200">
-                <!-- Populated dynamically -->
-              </tbody>
-            </table>
-          </div>
         </div>
 
-        <!-- Live Alerting Layer Dispatch Log (Email / SMS / Dashboard Reminders) -->
-        <div class="lg:col-span-5 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
-          <div class="px-5 py-3.5 border-b border-slate-200 flex items-center justify-between bg-slate-50">
-            <div>
-              <span class="text-[11px] uppercase tracking-wider text-amber-600 font-semibold">Alerting Layer • BullMQ / Redis Worker Log</span>
-              <h2 class="text-sm font-bold text-slate-900">Automated Email / SMS / Portal Reminders</h2>
-            </div>
-            <button id="btnSendRenewalReminderDemo" type="button" class="px-2.5 py-1 rounded text-xs font-semibold bg-amber-500 hover:bg-amber-600 text-white transition">
-              + Send Renewal Alert
-            </button>
-          </div>
-          <div id="alertDispatchLogContainer" class="p-4 space-y-2.5 max-h-96 overflow-y-auto custom-scroll flex-1">
-            <!-- Populated dynamically -->
-          </div>
-        </div>
-      </div>
-
-      <!-- Expiring & Matured FDR Watchlist -->
-      <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        <div class="px-5 py-3.5 border-b border-slate-200 flex items-center justify-between">
-          <h3 class="text-sm font-bold text-slate-900">Maturity Horizon Watchlist (90 / 60 / 30 Days & Overdue)</h3>
-          <span class="text-xs text-slate-500">Click "Upload Linked Renewal" to replace an expiring FDR while preserving full history</span>
-        </div>
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto border border-slate-200 rounded-xl">
           <table class="w-full text-left border-collapse text-xs">
             <thead>
-              <tr class="bg-slate-50 border-b border-slate-200 text-[11px] font-semibold text-slate-600 uppercase">
-                <th class="py-2.5 px-4">FDR ID & Receipt</th>
-                <th class="py-2.5 px-3">Institution</th>
-                <th class="py-2.5 px-3">Maturity Date</th>
-                <th class="py-2.5 px-3">Days Remaining</th>
-                <th class="py-2.5 px-3">Lifecycle Status</th>
-                <th class="py-2.5 px-4 text-right">Renewal Action</th>
+              <tr class="bg-slate-100 border-b border-slate-200 text-slate-600 uppercase">
+                <th class="py-3 px-3">FDR Number & Bank</th>
+                <th class="py-3 px-3">Institution & State</th>
+                <th class="py-3 px-3">Principal</th>
+                <th class="py-3 px-3">Maturity Date</th>
+                <th class="py-3 px-3">Horizon</th>
+                <th class="py-3 px-3">Verification Tier</th>
+                <th class="py-3 px-3">Lifecycle State</th>
+                <th class="py-3 px-3 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody id="maturityWatchlistBody" class="divide-y divide-slate-200">
-              <!-- Populated dynamically -->
-            </tbody>
+            <tbody id="ledgerTableBody" class="divide-y divide-slate-200 bg-white"></tbody>
           </table>
         </div>
       </div>
-    </section>
 
-    <!-- TAB 4: RELEASE / REFUND WORKFLOW WITH SLA TRACKING -->
-    <section id="tabPanel_refunds" class="hidden space-y-6">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <!-- Left 4 Cols: Institution Release/Refund Request Form -->
-        <div class="lg:col-span-4 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-          <div class="bg-slate-900 text-white px-5 py-3.5">
-            <span class="text-[11px] uppercase tracking-wider text-emerald-300 font-semibold">Idea #6 • Transparent Release Workflow</span>
-            <h2 class="text-sm font-bold">Submit FDR Release / Refund Request</h2>
-          </div>
-          <form id="refundRequestForm" class="p-4 space-y-3">
-            <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1">Select Eligible FDR Instrument</label>
-              <select id="refundFdrSelect" class="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg bg-white"></select>
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1">Release / Refund Reason</label>
-              <select id="refundReasonSelect" class="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg bg-white">
-                <option value="Maturity Tenure Completed (8 Years) - No Pending Dues">Maturity Tenure Completed (8 Years) - No Pending Dues</option>
-                <option value="Replaced by Renewed FDR Instrument">Replaced by Renewed FDR Instrument</option>
-                <option value="Course Closure Approved by AICTE EC">Course Closure Approved by AICTE EC</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1">Supporting NOC / EC Resolution Ref #</label>
-              <input id="refundDocRef" type="text" required value="AICTE/REG/NOC/2026/4419" class="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg mono" />
-            </div>
-            <button type="submit" class="w-full py-2 px-4 rounded-lg text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow transition">
-              Initiate Multi-Stage Release Workflow →
-            </button>
-          </form>
-        </div>
-
-        <!-- Right 8 Cols: Public-Style 5-Stage Status Tracker & SLA Monitor -->
-        <div class="lg:col-span-8 space-y-4" id="refundCasesContainer">
-          <!-- Populated dynamically -->
-        </div>
-      </div>
-    </section>
-
-    <!-- TAB 5: AICTE REGULATION BUREAU DASHBOARD & COMPLIANCE SCORING -->
-    <section id="tabPanel_compliance" class="hidden space-y-6">
-      <!-- Charts Row -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
-          <div class="flex items-center justify-between mb-3">
-            <div>
-              <span class="text-[11px] uppercase tracking-wider text-indigo-600 font-semibold">Regulation Bureau View</span>
-              <h3 class="text-sm font-bold text-slate-900">FDR Lifecycle Status Distribution</h3>
-            </div>
-            <span class="text-xs text-slate-500">Live Portfolio Breakdown</span>
-          </div>
-          <div class="relative h-64">
-            <canvas id="chartStatusBreakdown"></canvas>
-          </div>
-        </div>
-
-        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
-          <div class="flex items-center justify-between mb-3">
-            <div>
-              <span class="text-[11px] uppercase tracking-wider text-indigo-600 font-semibold">Regional AICTE Committees</span>
-              <h3 class="text-sm font-bold text-slate-900">Security Deposit Corpus by Region (₹ Lakhs)</h3>
-            </div>
-            <span class="text-xs text-slate-500">Verified vs. Pending Verification</span>
-          </div>
-          <div class="relative h-64">
-            <canvas id="chartRegionalCorpus"></canvas>
-          </div>
-        </div>
-      </div>
-
-      <!-- Idea #7: Non-Punitive Deposit Compliance Score Cards -->
-      <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        <div class="px-5 py-3.5 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
+      <!-- TAB 3: CONTINUITY-PRESERVING RENEWAL CHAIN -->
+      <div id="tab_renewal" class="p-5 space-y-5 hidden">
+        <div class="bg-purple-50/70 border border-purple-200 rounded-xl p-4 flex flex-wrap items-center justify-between gap-3">
           <div>
-            <span class="text-[11px] uppercase tracking-wider text-emerald-600 font-semibold">Idea #7 • Deposit Compliance Scoring Engine</span>
-            <h3 class="text-sm font-bold text-slate-900">Institution Compliance Scorecard (Green / Amber / Red Prioritization)</h3>
+            <h2 class="text-sm font-bold text-purple-950">Continuity-Preserving Renewal Chain</h2>
+            <p class="text-xs text-purple-800">Renewals never overwrite historical FDR records. Each renewed receipt is linked as a child node to preserve an unbroken multi-year regulatory compliance chain.</p>
           </div>
-          <span class="text-xs text-slate-500">Scored on Document Completeness, Bank Verification, Renewal Timeliness & Discrepancies</span>
+          <div class="flex items-center gap-2">
+            <select id="chainInstituteSelect" onchange="renderRenewalChain()" class="text-xs px-3 py-2 rounded-lg border border-purple-300 bg-white font-semibold text-purple-950"></select>
+          </div>
         </div>
-        <div class="p-5 grid grid-cols-1 md:grid-cols-2 gap-4" id="complianceScorecardsContainer">
-          <!-- Populated dynamically -->
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+          <div class="lg:col-span-7 space-y-3" id="chainTimelineContainer"></div>
+
+          <div class="lg:col-span-5 bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+            <h3 class="text-sm font-bold text-slate-900">Link Renewed FDR Instrument</h3>
+            <p class="text-xs text-slate-500">Attach a newly issued renewal FDR to the active parent instrument without losing prior custody history.</p>
+            <div class="space-y-2.5 text-xs">
+              <div>
+                <label class="font-semibold text-slate-700 block mb-1">Parent Instrument (Maturing / Overdue)</label>
+                <input id="renewParentId" type="text" readonly class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-slate-100 mono text-slate-700" />
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="font-semibold text-slate-700 block mb-1">New Renewed FDR Number</label>
+                  <input id="renewNewFdrNo" type="text" value="PNB-R2026-99204" class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white mono" />
+                </div>
+                <div>
+                  <label class="font-semibold text-slate-700 block mb-1">Renewed Principal (₹)</label>
+                  <input id="renewNewAmount" type="number" value="1850000" class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white mono" />
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="font-semibold text-slate-700 block mb-1">Renewal Effective Date</label>
+                  <input id="renewIssueDate" type="date" value="2026-10-25" class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white mono" />
+                </div>
+                <div>
+                  <label class="font-semibold text-slate-700 block mb-1">New Maturity Date</label>
+                  <input id="renewMatDate" type="date" value="2034-10-25" class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white mono" />
+                </div>
+              </div>
+              <button onclick="executeRenewalLink()" class="w-full py-2.5 rounded-lg bg-purple-700 hover:bg-purple-800 text-white font-bold shadow transition mt-2">
+                🔗 Supersede Parent & Link Renewed FDR
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-    </section>
 
-  </main>
-
-  <!-- MODAL: "FDR PASSPORT" DIGITAL IDENTITY, QR CODE, LINEAGE COMPARISON & IMMUTABLE AUDIT LOG -->
-  <div id="fdrPassportModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden">
-      <div class="bg-slate-900 text-white px-6 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div class="px-2.5 py-1 rounded bg-indigo-500/20 border border-indigo-400/40 text-indigo-300 text-xs font-mono font-bold" id="modalPassportId">
-            PASSPORT-ID
-          </div>
+      <!-- TAB 4: 5-STAGE RELEASE & REFUND WORKFLOW -->
+      <div id="tab_release" class="p-5 space-y-5 hidden">
+        <div class="bg-emerald-50/70 border border-emerald-200 rounded-xl p-4 flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h2 class="text-base font-bold" id="modalPassportTitle">Digital FDR Passport</h2>
-            <p class="text-xs text-slate-400" id="modalPassportSubtitle">Traceable Lifecycle Identity & Cryptographic Audit Log</p>
+            <h2 class="text-sm font-bold text-emerald-950">Transparent 5-Stage Release / Encashment Authorization</h2>
+            <p class="text-xs text-emerald-800">Tracks every security deposit release request across Eligibility Check, No-Dues Scrutiny, Competent Authority Approval, and Final Bank Encashment.</p>
           </div>
+          <span class="text-xs font-bold px-2.5 py-1 rounded bg-emerald-200/80 text-emerald-950">Target Turnaround SLA: 15 Working Days</span>
         </div>
-        <button id="btnClosePassportModal" type="button" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200">
-          Close ✕
-        </button>
+
+        <div id="releaseCardsContainer" class="space-y-4"></div>
       </div>
 
-      <div class="p-6 overflow-y-auto custom-scroll space-y-6" id="modalPassportBody">
-        <!-- Populated dynamically -->
+      <!-- TAB 5: IMMUTABLE AUDIT LOG & EXCEPTION QUEUE -->
+      <div id="tab_audit" class="p-5 space-y-5 hidden">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+          <div class="lg:col-span-5 space-y-3">
+            <h3 class="text-sm font-bold text-slate-900">Active Compliance Exceptions</h3>
+            <div id="exceptionList" class="space-y-2.5"></div>
+          </div>
+          <div class="lg:col-span-7 space-y-3">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-bold text-slate-900">Immutable Cryptographic Event Ledger</h3>
+              <span class="text-[11px] mono text-slate-500">Append-Only SHA-256 Chain</span>
+            </div>
+            <div class="border border-slate-200 rounded-xl overflow-hidden bg-slate-950 text-slate-200 p-3 space-y-2 max-h-96 overflow-y-auto mono text-xs" id="auditLogContainer"></div>
+          </div>
+        </div>
       </div>
     </div>
+  </main>
+
+  <!-- Toast Notification -->
+  <div id="toastBox" class="fixed bottom-5 right-5 z-50 hidden bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl border border-slate-700 text-xs flex items-center gap-2.5 max-w-sm">
+    <span id="toastIcon" class="text-base">✅</span>
+    <span id="toastText" class="font-medium"></span>
   </div>
 
-  <!-- Toast Notification Container -->
-  <div id="toastContainer" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
-
   <script>
-    // ============================================================================
-    // APPLICATION STATE & SEED DATA (Grounded in SIH26265 Brainstorm PDF)
-    // ============================================================================
-    const DEMO_STEPS = [
-      { step: 1, title: "1. Upload FDR", desc: "Institution uploads an FDR scan & details" },
-      { step: 2, title: "2. OCR Flags Mismatch", desc: "AI extracts fields & flags deliberate mismatch" },
-      { step: 3, title: "3. Officer Verifies", desc: "Officer validates & checks immutable audit log" },
-      { step: 4, title: "4. Nearing Maturity", desc: "Control tower surfaces FDR expiring in 30 days" },
-      { step: 5, title: "5. Renewal Reminder", desc: "Automated alert dispatched to institution & officer" },
-      { step: 6, title: "6. Link Renewal FDR", desc: "Institution uploads renewal linked to original FDR" },
-      { step: 7, title: "7. Release & Close", desc: "Officer approves release/refund; case closes" }
-    ];
+    const TODAY = new Date('2026-10-25');
+    let currentRole = 'officer';
+    let currentGPS = '22.7196° N, 75.8577° E';
 
-    let appState = {
-      activeRole: "INSTITUTION", // INSTITUTION | OFFICER | BUREAU
-      activeTab: "institution",  // institution | verification | controltower | refunds | compliance
-      currentDemoStep: 0,
-      searchQuery: "",
-      statusFilter: "ALL",
-      fdrs: [],
-      alerts: [],
-      refundCases: []
+    const SAMPLE_CASES = {
+      mismatch: {
+        fileName: 'SBI_FDR_Scan_099412.pdf',
+        hash: 'SHA256: 8f94e1c0...3b1c',
+        bank: 'State Bank of India',
+        branch: 'New Delhi Main Branch • IFSC: SBIN0000691',
+        fdrNo: '39941200841',
+        instName: 'Apex Institute of Technology & Mgmt',
+        state: 'Delhi NCR',
+        lienHolder: 'Joint A/C: Member Secretary, AICTE',
+        declaredAmount: 5000000,
+        ocrAmount: 3500000,
+        rate: '7.25% p.a. (96 Mos)',
+        issueDate: '2026-10-15',
+        matDate: '2034-10-15',
+        autoRenew: 'DISABLED (Manual Lien)',
+        bankConfirmed: false
+      },
+      renewal: {
+        fileName: 'PNB_Renewal_2026_99204.pdf',
+        hash: 'SHA256: 4a71c992...9e04',
+        bank: 'Punjab National Bank',
+        branch: 'Bhopal MP Nagar • IFSC: PUNB0041200',
+        fdrNo: 'PNB-R2026-99204',
+        instName: 'Vindhya College of Engineering',
+        state: 'Madhya Pradesh',
+        lienHolder: 'Joint A/C: Member Secretary, AICTE',
+        declaredAmount: 1850000,
+        ocrAmount: 1850000,
+        rate: '7.40% p.a. (96 Mos)',
+        issueDate: '2026-10-25',
+        matDate: '2034-10-25',
+        autoRenew: 'DISABLED (Manual Lien)',
+        bankConfirmed: true
+      },
+      clean: {
+        fileName: 'HDFC_FDR_Scan_88301.pdf',
+        hash: 'SHA256: 9c20b118...7f2a',
+        bank: 'HDFC Bank Ltd',
+        branch: 'Pune Shivaji Nagar • IFSC: HDFC0000103',
+        fdrNo: '503008830192',
+        instName: 'Deccan Institute of Pharmacy',
+        state: 'Maharashtra',
+        lienHolder: 'Joint A/C: Member Secretary, AICTE',
+        declaredAmount: 1500000,
+        ocrAmount: 1500000,
+        rate: '7.10% p.a. (96 Mos)',
+        issueDate: '2026-10-20',
+        matDate: '2034-10-20',
+        autoRenew: 'DISABLED (Manual Lien)',
+        bankConfirmed: true
+      }
     };
 
-    function getInitialSeedState() {
-      return {
-        fdrs: [
-          {
-            id: "FDR-2026-001",
-            passportId: "AICTE-PASS-9081A",
-            institutionId: "INST-101",
-            institutionName: "Apex Institute of Technology, Indore",
-            region: "Central",
-            bankName: "State Bank of India",
-            ifsc: "SBIN0004821 • Indore Main",
-            fdrNumber: "SBI-FDR-2026-77104",
-            claimedAmount: 3500000,
-            ocrExtractedAmount: 3000000,
-            bankConfirmedAmount: 3000000,
-            issueDate: "2026-09-15",
-            maturityDate: "2034-09-15",
-            daysToMaturity: 2882,
-            nominee: "Member Secretary, AICTE + Director",
-            ocrConfidence: 84,
-            verificationBadge: "Mismatch", // Unverified | Bank-confirmed | Mismatch | Manual review required
-            lifecycleStatus: "Discrepancy-Flagged", // Active | Nearing Maturity | Matured | Renewed | Under Review | Discrepancy-Flagged | Released | Refunded
-            docHash: "sha256:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b",
-            parentFdrId: null,
-            renewedByFdrId: null,
-            editCountAfterApproval: 0,
-            discrepancyNote: "Claimed amount (₹35,00,000) exceeds OCR-extracted & CBS Bank-confirmed amount (₹30,00,000) by ₹5,00,000.",
-            auditLog: [
-              { ts: "2026-10-20 10:14 IST", actor: "INST-101 Nodal Officer", action: "FDR Uploaded", detail: "Uploaded PDF scan SBI-FDR-2026-77104.pdf", hash: "0x8a2f...c91e" },
-              { ts: "2026-10-20 10:15 IST", actor: "AI OCR+LLM Pipeline", action: "Mismatch Flagged", detail: "Extracted ₹30,00,000 (Confidence 84%) vs Claimed ₹35,00,000. Routed to human review.", hash: "0x4d1b...e07a" }
-            ]
-          },
-          {
-            id: "FDR-2018-042",
-            passportId: "AICTE-PASS-3319B",
-            institutionId: "INST-102",
-            institutionName: "Vidya Bharati College of Pharmacy, Delhi",
-            region: "North",
-            bankName: "Punjab National Bank",
-            ifsc: "PUNB0012900 • Connaught Place",
-            fdrNumber: "PNB-FDR-2018-55190",
-            claimedAmount: 1500000,
-            ocrExtractedAmount: 1500000,
-            bankConfirmedAmount: 1500000,
-            issueDate: "2018-11-20",
-            maturityDate: "2026-11-20",
-            daysToMaturity: 27,
-            nominee: "Member Secretary, AICTE",
-            ocrConfidence: 98,
-            verificationBadge: "Bank-confirmed",
-            lifecycleStatus: "Nearing Maturity",
-            docHash: "sha256:4b227777d4dd1fc61c6f884f48641d02b4d121d3fd",
-            parentFdrId: null,
-            renewedByFdrId: null,
-            editCountAfterApproval: 0,
-            discrepancyNote: null,
-            auditLog: [
-              { ts: "2018-11-21 11:30 IST", actor: "INST-102 Nodal Officer", action: "FDR Submitted", detail: "Initial 8-year Pharmacy Security Deposit FDR submitted.", hash: "0x11c4...92a0" },
-              { ts: "2018-11-24 15:40 IST", actor: "AICTE Regulation Officer", action: "Bank-Confirmed", detail: "Verified via PNB CBS API (₹15,00,000).", hash: "0x7e3a...11f9" },
-              { ts: "2026-10-21 08:00 IST", actor: "Lifecycle Control Tower", action: "Nearing Maturity (30d)", detail: "Auto-classified as Nearing Maturity (27 days remaining).", hash: "0x9b0d...44c2" }
-            ]
-          },
-          {
-            id: "FDR-2018-089",
-            passportId: "AICTE-PASS-6640C",
-            institutionId: "INST-103",
-            institutionName: "Dakshin Regional School of Management, Bengaluru",
-            region: "South",
-            bankName: "Canara Bank",
-            ifsc: "CNRB0001142 • MG Road Bengaluru",
-            fdrNumber: "CNRB-FDR-2018-10294",
-            claimedAmount: 2500000,
-            ocrExtractedAmount: 2500000,
-            bankConfirmedAmount: 2500000,
-            issueDate: "2018-10-01",
-            maturityDate: "2026-10-01",
-            daysToMaturity: -23,
-            nominee: "Member Secretary, AICTE",
-            ocrConfidence: 99,
-            verificationBadge: "Bank-confirmed",
-            lifecycleStatus: "Matured",
-            docHash: "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e464",
-            parentFdrId: null,
-            renewedByFdrId: null,
-            editCountAfterApproval: 0,
-            discrepancyNote: "Matured 23 days ago; replacement renewal or release application pending.",
-            auditLog: [
-              { ts: "2018-10-02 09:20 IST", actor: "INST-103 Nodal Officer", action: "FDR Submitted", detail: "Uploaded Canara Bank FDR ₹25,00,000.", hash: "0x3c91...a802" },
-              { ts: "2018-10-05 14:10 IST", actor: "AICTE Regulation Officer", action: "Bank-Confirmed", detail: "Confirmed via Canara Bank official confirmation.", hash: "0x5f20...b712" },
-              { ts: "2026-10-01 00:05 IST", actor: "Lifecycle Engine", action: "Matured", detail: "Instrument reached maturity date. Escalation timer started.", hash: "0x6a19...f001" }
-            ]
-          },
-          {
-            id: "FDR-2026-014",
-            passportId: "AICTE-PASS-7120D",
-            institutionId: "INST-104",
-            institutionName: "Eastern Frontier Engineering College, Bhubaneswar",
-            region: "East",
-            bankName: "Bank of Baroda",
-            ifsc: "BARB0BHUBAN • Bhubaneswar Main",
-            fdrNumber: "BOB-FDR-2026-44810",
-            claimedAmount: 4000000,
-            ocrExtractedAmount: 4000000,
-            bankConfirmedAmount: null,
-            issueDate: "2026-10-12",
-            maturityDate: "2034-10-12",
-            daysToMaturity: 2909,
-            nominee: "Member Secretary, AICTE",
-            ocrConfidence: 96,
-            verificationBadge: "Manual review required",
-            lifecycleStatus: "Under Review",
-            docHash: "sha256:7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3",
-            parentFdrId: null,
-            renewedByFdrId: null,
-            editCountAfterApproval: 0,
-            discrepancyNote: null,
-            auditLog: [
-              { ts: "2026-10-12 16:05 IST", actor: "INST-104 Nodal Officer", action: "FDR Submitted", detail: "Uploaded Bank of Baroda FDR ₹40,00,000.", hash: "0x2a88...19c4" },
-              { ts: "2026-10-12 16:06 IST", actor: "AI OCR+LLM Pipeline", action: "Fields Extracted", detail: "96% OCR confidence; all fields match claimed input. Awaiting Bank confirmation.", hash: "0x7d44...38b1" }
-            ]
-          }
-        ],
-        alerts: [
-          {
-            id: "ALT-901",
-            ts: "2026-10-23 09:00 IST",
-            channel: "EMAIL + SMS + PORTAL",
-            recipient: "INST-102 (Vidya Bharati College of Pharmacy) & Assigned Officer",
-            severity: "AMBER",
-            title: "30-Day Maturity Countdown: PNB-FDR-2018-55190 (₹15.0L)",
-            message: "FDR expires in 27 days (2026-11-20). Upload replacement/renewal FDR or apply for releaseNOC."
-          },
-          {
-            id: "ALT-902",
-            ts: "2026-10-22 14:30 IST",
-            channel: "ESCALATION TICKET",
-            recipient: "AICTE Regulation Bureau & INST-103 (Dakshin Regional School)",
-            severity: "RED",
-            title: "Overdue Renewal Risk: CNRB-FDR-2018-10294 Matured 23 Days Ago",
-            message: "Instrument matured on 2026-10-01 without linked replacement FDR. Marked Compliance Risk."
-          },
-          {
-            id: "ALT-903",
-            ts: "2026-10-20 10:15 IST",
-            channel: "DISCREPANCY TICKET",
-            recipient: "AICTE Verification Officer & INST-101 (Apex Institute)",
-            severity: "RED",
-            title: "Amount Mismatch Flagged: SBI-FDR-2026-77104",
-            message: "Claimed ₹35.0L vs OCR/Bank ₹30.0L. Auto-routed to human verification queue."
-          }
-        ],
-        refundCases: [
-          {
-            id: "REL-2026-11",
-            fdrId: "FDR-2018-089",
-            fdrNumber: "CNRB-FDR-2018-10294",
-            institutionName: "Dakshin Regional School of Management, Bengaluru",
-            amount: 2500000,
-            reason: "Maturity Tenure Completed (8 Years) - No Pending Dues",
-            docRef: "AICTE/REG/NOC/2026/4419",
-            stageIndex: 1, // 0: Received, 1: Under Verification, 2: Approved, 3: Payment Initiated, 4: Closed
-            daysAging: 9,
-            slaLimitDays: 15,
-            slaBreached: false,
-            updatedAt: "2026-10-22 17:10 IST"
-          }
-        ]
-      };
-    }
+    let activeIntake = JSON.parse(JSON.stringify(SAMPLE_CASES.mismatch));
 
-    const REFUND_STAGES = [
-      "Received",
-      "Under Verification",
-      "Approved",
-      "Payment Initiated",
-      "Closed"
+    let fdrLedger = [
+      { id: 'FDR-101', fdrNo: '38100294811', inst: 'National Institute of Tech Studies', state: 'Karnataka', bank: 'State Bank of India', ifsc: 'SBIN0004122', amount: 3500000, issueDate: '2018-11-12', matDate: '2026-11-12', verifyTier: 'Bank-Confirmed', status: 'Renewal Due', parentId: null },
+      { id: 'FDR-102', fdrNo: '04129901823', inst: 'Saraswati College of Pharmacy', state: 'Rajasthan', bank: 'Bank of Baroda', ifsc: 'BARB0JAIPUR', amount: 1500000, issueDate: '2018-11-18', matDate: '2026-11-18', verifyTier: 'Bank-Confirmed', status: 'Renewal Due', parentId: null },
+      { id: 'FDR-103', fdrNo: '61920048129', inst: 'Kaveri School of Management', state: 'Tamil Nadu', bank: 'Canara Bank', ifsc: 'CNRB0001920', amount: 1500000, issueDate: '2018-12-14', matDate: '2026-12-14', verifyTier: 'Screened', status: 'Active', parentId: null },
+      { id: 'FDR-104', fdrNo: '99102837465', inst: 'Eastern Academy of Architecture', state: 'West Bengal', bank: 'Indian Bank', ifsc: 'IDIB000C081', amount: 2500000, issueDate: '2019-01-10', matDate: '2027-01-10', verifyTier: 'Bank-Confirmed', status: 'Active', parentId: null },
+      { id: 'FDR-105', fdrNo: 'PNB-2018-77102', inst: 'Vindhya College of Engineering', state: 'Madhya Pradesh', bank: 'Punjab National Bank', ifsc: 'PUNB0041200', amount: 1500000, issueDate: '2018-10-05', matDate: '2026-10-05', verifyTier: 'Bank-Confirmed', status: 'Overdue', parentId: 'PNB-2010-11820', history: [
+        { fdrNo: 'PNB-2010-11820', period: '2010-10-05 → 2018-10-05', amount: 1500000, status: 'Superseded (Renewed 2018)' }
+      ]},
+      { id: 'FDR-106', fdrNo: '77291038411', inst: 'Patliputra Polytechnic Institute', state: 'Bihar', bank: 'Union Bank of India', ifsc: 'UBIN0539121', amount: 1200000, issueDate: '2021-06-15', matDate: '2029-06-15', verifyTier: 'Bank-Confirmed', status: 'Active', parentId: null },
+      { id: 'FDR-107', fdrNo: '88291044120', inst: 'Himalayan Institute of Engg', state: 'Uttarakhand', bank: 'State Bank of India', ifsc: 'SBIN0002310', amount: 3500000, issueDate: '2016-08-20', matDate: '2026-08-20', verifyTier: 'Bank-Confirmed', status: 'Release in Progress', parentId: null },
+      { id: 'FDR-108', fdrNo: '44910293812', inst: 'Godavari Vidya Parishad', state: 'Andhra Pradesh', bank: 'State Bank of India', ifsc: 'SBIN0008812', amount: 1500000, issueDate: '2022-03-01', matDate: '2030-03-01', verifyTier: 'Extracted', status: 'Under Scrutiny', parentId: null }
     ];
 
-    // Initialize state
-    const seed = getInitialSeedState();
-    appState.fdrs = seed.fdrs;
-    appState.alerts = seed.alerts;
-    appState.refundCases = seed.refundCases;
+    let releaseRequests = [
+      {
+        reqId: 'REL-2026-089',
+        fdrNo: '88291044120',
+        inst: 'Himalayan Institute of Engg (Uttarakhand)',
+        amount: 3500000,
+        bank: 'State Bank of India',
+        submittedOn: '2026-10-16',
+        daysElapsed: 9,
+        stage: 3,
+        logs: [
+          '2026-10-16 10:14 — Request Received with digital seal',
+          '2026-10-18 14:30 — 8-Year maturity & zero-deficiency verified',
+          '2026-10-21 11:05 — Vigilance & Regional Office clearance recorded'
+        ]
+      },
+      {
+        reqId: 'REL-2026-092',
+        fdrNo: '55109283109',
+        inst: 'Marwar Technical Campus (Rajasthan)',
+        amount: 1500000,
+        bank: 'Bank of India',
+        submittedOn: '2026-10-20',
+        daysElapsed: 5,
+        stage: 2,
+        logs: [
+          '2026-10-20 09:40 — Request Received',
+          '2026-10-22 16:15 — Eligibility & Original FDR Custody Verified'
+        ]
+      },
+      {
+        reqId: 'REL-2026-095',
+        fdrNo: '11920394811',
+        inst: 'Sahyadri College of Management (Maharashtra)',
+        amount: 1500000,
+        bank: 'Central Bank of India',
+        submittedOn: '2026-10-24',
+        daysElapsed: 1,
+        stage: 1,
+        logs: [
+          '2026-10-24 17:20 — Release application submitted by Institute Nodal Officer'
+        ]
+      }
+    ];
 
-    let statusChartInstance = null;
-    let regionalChartInstance = null;
+    let auditEvents = [
+      { ts: '2026-10-25 09:42:11', actor: 'SYSTEM-OCR', action: 'Ingested SBI_FDR_Scan_099412.pdf (SHA256: 8f94e1c0...3b1c) & flagged ₹15L principal variance', hash: '9a02f1...e82b' },
+      { ts: '2026-10-25 08:00:02', actor: 'CRON-SCHEDULER', action: 'Evaluated maturity buckets: 2 Critical (≤30d), 1 Warning (≤60d), 1 Overdue', hash: '7c81d4...190a' },
+      { ts: '2026-10-24 17:20:44', actor: 'INST-NODAL-441', action: 'Submitted Release Application REL-2026-095 for FDR 11920394811', hash: '3f19b2...c401' },
+      { ts: '2026-10-22 16:15:09', actor: 'SCRUTINY-OFF-12', action: 'Completed Eligibility & Custody Check for REL-2026-092', hash: '6b44a9...002e' },
+      { ts: '2026-10-21 11:05:33', actor: 'RO-NORTH-04', action: 'Granted Regional Office No-Dues Clearance for REL-2026-089', hash: '2d90e8...771f' },
+      { ts: '2026-10-19 12:10:00', actor: 'CBS-BRIDGE', action: 'Verified Lien Status with SBI Core Banking for FDR 38100294811', hash: '1a88c3...554d' }
+    ];
 
-    // ============================================================================
-    // UTILITY HELPERS
-    // ============================================================================
-    function formatINR(amount) {
-      if (amount === null || amount === undefined || isNaN(amount)) return "Pending";
-      const lakhs = (amount / 100000).toFixed(2);
-      return "₹" + Number(amount).toLocaleString("en-IN") + " (" + lakhs + " L)";
+    function showToast(msg, icon = '✅') {
+      const box = document.getElementById('toastBox');
+      document.getElementById('toastIcon').textContent = icon;
+      document.getElementById('toastText').textContent = msg;
+      box.classList.remove('hidden');
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => box.classList.add('hidden'), 3600);
     }
 
-    function showToast(title, message, tone = "indigo") {
-      const container = document.getElementById("toastContainer");
-      const toneClasses = {
-        indigo: "bg-slate-900 border-indigo-500 text-white",
-        emerald: "bg-emerald-950 border-emerald-500 text-emerald-50",
-        amber: "bg-amber-950 border-amber-400 text-amber-50",
-        rose: "bg-rose-950 border-rose-500 text-rose-50"
-      };
-      const el = document.createElement("div");
-      el.className = `pointer-events-auto border-l-4 rounded-xl p-3.5 shadow-xl transition-all duration-300 ${toneClasses[tone] || toneClasses.indigo}`;
-      el.innerHTML = `
-        <div class="flex items-start justify-between gap-2">
-          <div>
-            <p class="text-xs font-bold">${title}</p>
-            <p class="text-[11px] opacity-90 mt-0.5">${message}</p>
-          </div>
-          <button type="button" class="text-xs opacity-70 hover:opacity-100">✕</button>
-        </div>
-      `;
-      el.querySelector("button").addEventListener("click", () => el.remove());
-      container.appendChild(el);
-      setTimeout(() => {
-        if (el.parentNode) el.remove();
-      }, 4800);
+    function formatINR(num) {
+      return '₹ ' + Number(num).toLocaleString('en-IN');
     }
 
-    function getVerificationBadgeHTML(badge) {
-      const map = {
-        "Bank-confirmed": "bg-emerald-100 text-emerald-800 border-emerald-300",
-        "Mismatch": "bg-rose-100 text-rose-800 border-rose-300",
-        "Manual review required": "bg-amber-100 text-amber-800 border-amber-300",
-        "Unverified": "bg-slate-100 text-slate-700 border-slate-300"
-      };
-      const cls = map[badge] || map["Unverified"];
-      return `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold border ${cls}">${badge}</span>`;
+    function daysUntil(dateStr) {
+      const target = new Date(dateStr);
+      return Math.round((target - TODAY) / (1000 * 60 * 60 * 24));
     }
 
-    function getLifecycleBadgeHTML(status) {
-      const map = {
-        "Active": "bg-emerald-50 text-emerald-700 border-emerald-200",
-        "Nearing Maturity": "bg-amber-50 text-amber-800 border-amber-300",
-        "Matured": "bg-rose-50 text-rose-700 border-rose-300",
-        "Renewed": "bg-indigo-50 text-indigo-700 border-indigo-200",
-        "Under Review": "bg-sky-50 text-sky-700 border-sky-200",
-        "Discrepancy-Flagged": "bg-rose-100 text-rose-900 border-rose-400 font-bold",
-        "Released": "bg-teal-50 text-teal-800 border-teal-300",
-        "Refunded": "bg-purple-50 text-purple-800 border-purple-300"
-      };
-      const cls = map[status] || "bg-slate-100 text-slate-700 border-slate-300";
-      return `<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold border ${cls}">${status}</span>`;
-    }
-
-    function generateHashSnippet() {
-      const chars = "0123456789abcdef";
-      let h1 = "0x", h2 = "";
-      for (let i = 0; i < 4; i++) h1 += chars[Math.floor(Math.random() * 16)];
-      for (let i = 0; i < 4; i++) h2 += chars[Math.floor(Math.random() * 16)];
-      return `${h1}...${h2}`;
-    }
-
-    function nowIST() {
-      return "2026-10-24 00:15 IST";
-    }
-
-    // ============================================================================
-    // RENDER FUNCTIONS
-    // ============================================================================
-    function renderAll() {
-      renderRoleAndTabs();
-      renderDemoStepper();
-      renderKpiStrip();
-      renderParentFdrDropdown();
-      renderInstitutionFdrTable();
-      renderVerificationWorkspace();
-      renderControlTower();
-      renderRefundWorkflow();
-      renderComplianceDashboard();
-    }
-
-    function renderRoleAndTabs() {
-      const roleMap = {
-        INSTITUTION: document.getElementById("roleBtnInstitution"),
-        OFFICER: document.getElementById("roleBtnOfficer"),
-        BUREAU: document.getElementById("roleBtnBureau")
-      };
-      Object.entries(roleMap).forEach(([roleKey, btn]) => {
-        if (appState.activeRole === roleKey) {
-          btn.className = "px-2.5 py-1.5 rounded-md text-xs font-bold bg-indigo-600 text-white shadow transition";
-        } else {
-          btn.className = "px-2.5 py-1.5 rounded-md text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-700/60 transition";
-        }
+    function switchTab(tabName) {
+      ['intake', 'ledger', 'renewal', 'release', 'audit'].forEach(t => {
+        document.getElementById('tab_' + t).classList.toggle('hidden', t !== tabName);
+        document.getElementById('tabBtn_' + t).classList.toggle('tab-active', t === tabName);
       });
+      if (tabName === 'ledger') renderLedger();
+      if (tabName === 'renewal') renderRenewalChain();
+      if (tabName === 'release') renderReleases();
+      if (tabName === 'audit') renderAuditAndExceptions();
+    }
 
-      document.querySelectorAll(".nav-tab-btn").forEach((btn) => {
-        const tab = btn.getAttribute("data-tab");
-        const panel = document.getElementById("tabPanel_" + tab);
-        if (tab === appState.activeTab) {
-          btn.className = "nav-tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold bg-slate-900 text-white shadow-sm transition";
-          if (panel) panel.classList.remove("hidden");
-        } else {
-          btn.className = "nav-tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 transition";
-          if (panel) panel.classList.add("hidden");
-        }
-      });
+    function setRole(role) {
+      currentRole = role;
+      document.getElementById('roleBtnOfficer').className = role === 'officer'
+        ? 'px-2.5 py-1 rounded-md font-semibold bg-blue-600 text-white transition'
+        : 'px-2.5 py-1 rounded-md font-semibold text-slate-300 hover:text-white transition';
+      document.getElementById('roleBtnInstitute').className = role === 'institute'
+        ? 'px-2.5 py-1 rounded-md font-semibold bg-blue-600 text-white transition'
+        : 'px-2.5 py-1 rounded-md font-semibold text-slate-300 hover:text-white transition';
+      showToast(role === 'officer' ? 'Switched to AICTE Scrutiny Officer View' : 'Switched to Institution Nodal Officer View', '👤');
+      renderReleases();
+    }
 
-      if (appState.activeTab === "compliance") {
-        setTimeout(renderCharts, 60);
+    function refreshLiveGPS() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          pos => {
+            currentGPS = `${pos.coords.latitude.toFixed(4)}° N, ${pos.coords.longitude.toFixed(4)}° E`;
+            updateGPSLabels();
+            addAudit('GEO-TAG-ENGINE', `Captured live officer inspection coordinates: ${currentGPS}`);
+            showToast(`Live GPS Geo-Tag Updated: ${currentGPS}`, '📍');
+          },
+          () => {
+            currentGPS = '22.7196° N, 75.8577° E (Verified Node)';
+            updateGPSLabels();
+            showToast(`Verified Nodal Coordinates Locked: ${currentGPS}`, '📍');
+          }
+        );
       }
     }
 
-    function renderDemoStepper() {
-      const container = document.getElementById("demoStepperContainer");
-      container.innerHTML = DEMO_STEPS.map((s) => {
-        const isCurrent = appState.currentDemoStep === s.step;
-        const isDone = appState.currentDemoStep > s.step;
-        let cls = "bg-indigo-900/50 border-indigo-700/60 text-indigo-200 hover:bg-indigo-800/70";
-        if (isCurrent) {
-          cls = "bg-amber-400 text-slate-950 border-amber-300 font-bold demo-active-pill";
-        } else if (isDone) {
-          cls = "bg-emerald-900/60 border-emerald-500/50 text-emerald-200";
-        }
-        return `
-          <button type="button" data-demo-step="${s.step}" class="demo-step-btn text-left p-2 rounded-lg border transition flex flex-col justify-between ${cls}">
-            <div class="flex items-center justify-between gap-1">
-              <span class="text-[11px] font-bold truncate">${s.title}</span>
-              <span class="text-[10px]">${isDone ? "✓" : isCurrent ? "●" : ""}</span>
-            </div>
-            <p class="text-[10px] opacity-85 truncate mt-0.5">${s.desc}</p>
-          </button>
-        `;
-      }).join("");
-
-      container.querySelectorAll(".demo-step-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const stepNum = parseInt(btn.getAttribute("data-demo-step"), 10);
-          executeDemoStep(stepNum);
-        });
-      });
+    function updateGPSLabels() {
+      document.getElementById('geoCaptureLabel').textContent = '📍 ' + currentGPS;
+      document.getElementById('headerGeoBadge').textContent = currentGPS + ' (Verified)';
     }
 
-    function renderKpiStrip() {
-      const totalCorpus = appState.fdrs.reduce((acc, f) => acc + (f.claimedAmount || 0), 0);
-      const bankConfirmedCount = appState.fdrs.filter(f => f.verificationBadge === "Bank-confirmed").length;
-      const discrepancyCount = appState.fdrs.filter(f => f.lifecycleStatus === "Discrepancy-Flagged" || f.verificationBadge === "Mismatch").length;
-      const nearingOrMatured = appState.fdrs.filter(f => f.lifecycleStatus === "Nearing Maturity" || f.lifecycleStatus === "Matured").length;
-      const renewedCount = appState.fdrs.filter(f => f.lifecycleStatus === "Renewed" || f.parentFdrId).length;
-      const releasedOrRefunded = appState.fdrs.filter(f => f.lifecycleStatus === "Released" || f.lifecycleStatus === "Refunded").length;
+    function handleDirectFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const randomHash = 'SHA256: ' + Math.random().toString(16).substring(2, 10) + '...' + Math.random().toString(16).substring(2, 6);
+      activeIntake = {
+        fileName: file.name,
+        hash: randomHash,
+        bank: 'State Bank of India',
+        branch: 'Indore Corporate Branch • IFSC: SBIN0030115',
+        fdrNo: 'SBI-' + Math.floor(100000000 + Math.random() * 900000000),
+        instName: 'Shri Govindram Seksaria Institute of Tech',
+        state: 'Madhya Pradesh',
+        lienHolder: 'Joint A/C: Member Secretary, AICTE',
+        declaredAmount: 3500000,
+        ocrAmount: 3500000,
+        rate: '7.30% p.a. (96 Mos)',
+        issueDate: '2026-10-25',
+        matDate: '2034-10-25',
+        autoRenew: 'DISABLED (Manual Lien)',
+        bankConfirmed: false
+      };
+      renderIntake();
+      addAudit('INST-UPLOAD', `Uploaded instrument ${file.name} (${randomHash}) at ${currentGPS}`);
+      showToast(`Parsed ${file.name} via OCR & Vision-LLM`, '📄');
+    }
 
-      const kpis = [
-        { label: "Total Tracked FDRs", value: appState.fdrs.length, sub: `Corpus: ₹${(totalCorpus / 100000).toFixed(1)} Lakhs`, tone: "text-slate-900" },
-        { label: "Bank-Confirmed", value: `${bankConfirmedCount} / ${appState.fdrs.length}`, sub: "CBS API / Letter Verified", tone: "text-emerald-700" },
-        { label: "Discrepancy Flagged", value: discrepancyCount, sub: "Claimed vs. Bank Mismatch", tone: "text-rose-600" },
-        { label: "Maturity Watch (≤90d)", value: nearingOrMatured, sub: "Nearing Maturity / Matured", tone: "text-amber-600" },
-        { label: "Linked Renewals", value: renewedCount, sub: "Preserved Parent Lineage", tone: "text-indigo-600" },
-        { label: "Released / Closed", value: releasedOrRefunded, sub: "SLA-Tracked Refunds", tone: "text-teal-700" }
+    function loadSampleCase(key) {
+      activeIntake = JSON.parse(JSON.stringify(SAMPLE_CASES[key]));
+      renderIntake();
+      showToast(`Loaded instrument: ${activeIntake.fileName}`, '📄');
+    }
+
+    function renderIntake() {
+      document.getElementById('docFileName').textContent = activeIntake.fileName;
+      document.getElementById('docHashShort').textContent = activeIntake.hash;
+      document.getElementById('scanBankTitle').textContent = activeIntake.bank.toUpperCase();
+      document.getElementById('scanBranchTitle').textContent = activeIntake.branch;
+      document.getElementById('scanFdrNo').textContent = 'FDR No: ' + activeIntake.fdrNo;
+      document.getElementById('scanInstName').textContent = activeIntake.instName;
+      document.getElementById('scanLienHolder').textContent = activeIntake.lienHolder;
+      document.getElementById('scanAmount').textContent = formatINR(activeIntake.ocrAmount);
+      document.getElementById('scanRate').textContent = activeIntake.rate;
+      document.getElementById('scanIssueDate').textContent = activeIntake.issueDate;
+      document.getElementById('scanMatDate').textContent = activeIntake.matDate;
+
+      const hasMismatch = activeIntake.declaredAmount !== activeIntake.ocrAmount;
+
+      const rules = [
+        { label: 'Joint Holder "Member Secretary, AICTE" Present', ok: true },
+        { label: 'Scheduled Commercial Bank IFSC Verified', ok: true },
+        { label: 'Minimum 8-Year Lock-In Tenor Verified', ok: true },
+        { label: 'Principal Amount Matches Portal Declaration', ok: !hasMismatch }
+      ];
+      document.getElementById('ruleChecklist').innerHTML = rules.map(r => `
+        <div class="flex items-center justify-between px-2.5 py-1.5 rounded ${r.ok ? 'bg-emerald-950/60 text-emerald-300 border border-emerald-800/60' : 'bg-red-950/70 text-red-300 border border-red-800'}">
+          <span>${r.label}</span>
+          <span class="font-bold">${r.ok ? '✓ PASS' : '✗ MISMATCH'}</span>
+        </div>
+      `).join('');
+
+      const rows = [
+        { field: 'FDR Number', declared: activeIntake.fdrNo, ocr: activeIntake.fdrNo, conf: '99.8%' },
+        { field: 'Issuing Bank', declared: activeIntake.bank, ocr: activeIntake.bank, conf: '99.5%' },
+        { field: 'Joint Lien Clause', declared: activeIntake.lienHolder, ocr: activeIntake.lienHolder, conf: '98.9%' },
+        { field: 'Principal Amount', declared: formatINR(activeIntake.declaredAmount), ocr: formatINR(activeIntake.ocrAmount), conf: '99.4%', isAmount: true },
+        { field: 'Issue Date', declared: activeIntake.issueDate, ocr: activeIntake.issueDate, conf: '99.2%' },
+        { field: 'Maturity Date', declared: activeIntake.matDate, ocr: activeIntake.matDate, conf: '99.1%' }
       ];
 
-      document.getElementById("kpiStrip").innerHTML = kpis.map(k => `
-        <div class="bg-white rounded-xl border border-slate-200 p-3.5 shadow-sm">
-          <p class="text-[11px] font-semibold uppercase tracking-wider text-slate-500">${k.label}</p>
-          <p class="text-xl font-extrabold mt-1 ${k.tone}">${k.value}</p>
-          <p class="text-[11px] text-slate-500 mt-0.5">${k.sub}</p>
-        </div>
-      `).join("");
-    }
-
-    function renderParentFdrDropdown() {
-      const sel = document.getElementById("formParentFdrId");
-      if (!sel) return;
-      sel.innerHTML = appState.fdrs.map(f => `
-        <option value="${f.id}">${f.id} • ${f.fdrNumber} (${f.institutionName.split(",")[0]} - ${f.lifecycleStatus})</option>
-      `).join("");
-    }
-
-    function getFilteredFdrs() {
-      return appState.fdrs.filter((f) => {
-        const matchesStatus = appState.statusFilter === "ALL" || f.lifecycleStatus === appState.statusFilter;
-        const q = appState.searchQuery.trim().toLowerCase();
-        const matchesQuery = !q ||
-          f.fdrNumber.toLowerCase().includes(q) ||
-          f.institutionName.toLowerCase().includes(q) ||
-          f.bankName.toLowerCase().includes(q) ||
-          f.passportId.toLowerCase().includes(q) ||
-          f.id.toLowerCase().includes(q);
-        return matchesStatus && matchesQuery;
-      });
-    }
-
-    function renderInstitutionFdrTable() {
-      const tbody = document.getElementById("institutionFdrTableBody");
-      const list = getFilteredFdrs();
-
-      if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-slate-500">No FDR instruments match the current filter.</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = list.map((f) => {
-        const mismatch = f.bankConfirmedAmount !== null && f.claimedAmount !== f.bankConfirmedAmount;
+      document.getElementById('reconcileTableBody').innerHTML = rows.map(r => {
+        const match = r.declared === r.ocr;
         return `
-          <tr class="hover:bg-slate-50/80 transition">
-            <td class="py-3 px-4">
-              <div class="font-bold text-slate-900 mono">${f.fdrNumber}</div>
-              <div class="flex items-center gap-1.5 mt-0.5">
-                <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-200">${f.passportId}</span>
-                ${f.parentFdrId ? `<span class="text-[10px] px-1.5 py-0.5 rounded bg-purple-50 text-purple-700 border border-purple-200">Replaces ${f.parentFdrId}</span>` : ""}
-              </div>
-            </td>
-            <td class="py-3 px-3">
-              <div class="font-semibold text-slate-800">${f.institutionName}</div>
-              <div class="text-[11px] text-slate-500">${f.bankName} • <span class="mono">${f.ifsc}</span></div>
-            </td>
-            <td class="py-3 px-3 text-right">
-              <div class="font-bold mono ${mismatch ? 'text-rose-600' : 'text-slate-900'}">Claimed: ₹${(f.claimedAmount / 100000).toFixed(2)}L</div>
-              <div class="text-[11px] mono text-slate-500">
-                Bank: ${f.bankConfirmedAmount !== null ? `₹${(f.bankConfirmedAmount / 100000).toFixed(2)}L` : `OCR ₹${(f.ocrExtractedAmount / 100000).toFixed(2)}L`}
-              </div>
-            </td>
-            <td class="py-3 px-3">
-              <div class="font-medium text-slate-800 mono">${f.maturityDate}</div>
-              <div class="text-[11px] ${f.daysToMaturity <= 30 ? 'text-rose-600 font-semibold' : 'text-slate-500'}">
-                ${f.daysToMaturity < 0 ? `${Math.abs(f.daysToMaturity)}d overdue` : `${f.daysToMaturity}d left`}
-              </div>
-            </td>
-            <td class="py-3 px-3">${getVerificationBadgeHTML(f.verificationBadge)}</td>
-            <td class="py-3 px-3">${getLifecycleBadgeHTML(f.lifecycleStatus)}</td>
-            <td class="py-3 px-4 text-right space-x-1 whitespace-nowrap">
-              <button type="button" data-passport-fdr="${f.id}" class="btn-open-passport px-2.5 py-1 rounded-md text-xs font-bold bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 transition">
-                FDR Passport
-              </button>
+          <tr class="${match ? 'bg-white' : 'diff-mismatch font-semibold'}">
+            <td class="py-2.5 px-2.5 font-semibold text-slate-800">${r.field}</td>
+            <td class="py-2.5 px-2.5 mono">${r.declared}</td>
+            <td class="py-2.5 px-2.5 mono">${r.ocr}</td>
+            <td class="py-2.5 px-2.5 mono text-slate-500">${r.conf}</td>
+            <td class="py-2.5 px-2.5">
+              ${match
+                ? '<span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[11px]">✓ Matched</span>'
+                : '<button onclick="acceptAllOCR()" class="px-2 py-0.5 rounded bg-red-600 text-white font-bold text-[11px] hover:bg-red-700">⚠ Reconcile to Scan</button>'}
             </td>
           </tr>
         `;
-      }).join("");
+      }).join('');
 
-      tbody.querySelectorAll(".btn-open-passport").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          openFdrPassportModal(btn.getAttribute("data-passport-fdr"));
-        });
-      });
-    }
+      const vBadge2 = document.getElementById('vBadge2');
+      const vBadge3 = document.getElementById('vBadge3');
+      const gateMsg = document.getElementById('intakeGateMessage');
 
-    // ============================================================================
-    // TAB 2: VERIFICATION WORKSPACE & FRAUD / ANOMALY ENGINE
-    // ============================================================================
-    function renderVerificationWorkspace() {
-      const container = document.getElementById("verificationQueueContainer");
-      const list = getFilteredFdrs();
-
-      container.innerHTML = list.map((f) => {
-        const amountMismatch = f.claimedAmount !== f.ocrExtractedAmount || (f.bankConfirmedAmount !== null && f.claimedAmount !== f.bankConfirmedAmount);
-        return `
-          <div class="rounded-xl border ${amountMismatch ? 'border-rose-300 bg-rose-50/30' : 'border-slate-200 bg-slate-50/50'} p-4 space-y-3">
-            <div class="flex flex-wrap items-center justify-between gap-2">
-              <div>
-                <div class="flex items-center gap-2">
-                  <span class="text-xs font-bold mono text-indigo-700">${f.id}</span>
-                  <span class="text-sm font-bold text-slate-900 mono">${f.fdrNumber}</span>
-                  ${getVerificationBadgeHTML(f.verificationBadge)}
-                  ${getLifecycleBadgeHTML(f.lifecycleStatus)}
-                </div>
-                <p class="text-xs text-slate-600 mt-0.5">${f.institutionName} • ${f.bankName} (${f.ifsc})</p>
-              </div>
-              <div class="flex items-center gap-1.5">
-                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-white border border-slate-200">OCR Confidence: <b>${f.ocrConfidence}%</b></span>
-                <button type="button" data-passport-fdr="${f.id}" class="btn-open-passport-ver px-2.5 py-1 rounded text-xs font-semibold bg-white hover:bg-slate-100 text-slate-800 border border-slate-300">
-                  Inspect Passport & Audit Log
-                </button>
-              </div>
-            </div>
-
-            <!-- Side-by-Side Comparison: Claimed by Institution vs. OCR Scan vs. Confirmed by Bank -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
-              <div class="bg-white p-3 rounded-lg border border-slate-200">
-                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">1. Claimed by Institution</span>
-                <p class="text-sm font-bold text-slate-900 mono mt-1">${formatINR(f.claimedAmount)}</p>
-                <p class="text-[11px] text-slate-500 mt-0.5">Maturity: ${f.maturityDate} • Lien: ${f.nominee}</p>
-              </div>
-              <div class="bg-white p-3 rounded-lg border ${f.claimedAmount !== f.ocrExtractedAmount ? 'border-amber-400 bg-amber-50/40' : 'border-slate-200'}">
-                <span class="text-[10px] font-bold uppercase tracking-wider text-amber-700">2. AI OCR+LLM Scan Extraction</span>
-                <p class="text-sm font-bold mono mt-1 ${f.claimedAmount !== f.ocrExtractedAmount ? 'text-rose-600' : 'text-slate-900'}">${formatINR(f.ocrExtractedAmount)}</p>
-                <p class="text-[11px] text-slate-500 mt-0.5">Hash: <span class="mono">${f.docHash.slice(0, 20)}...</span></p>
-              </div>
-              <div class="bg-white p-3 rounded-lg border ${f.bankConfirmedAmount !== null ? 'border-emerald-300 bg-emerald-50/30' : 'border-slate-200'}">
-                <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-700">3. Confirmed by Issuing Bank</span>
-                <p class="text-sm font-bold mono mt-1 text-emerald-900">
-                  ${f.bankConfirmedAmount !== null ? formatINR(f.bankConfirmedAmount) : "Awaiting CBS / Letter Confirmation"}
-                </p>
-                <p class="text-[11px] text-slate-500 mt-0.5">Badge: ${f.verificationBadge}</p>
-              </div>
-            </div>
-
-            ${f.discrepancyNote ? `
-              <div class="bg-rose-100/80 border border-rose-300 text-rose-900 px-3 py-2 rounded-lg text-xs flex items-center justify-between gap-2">
-                <span><b>Discrepancy Flag:</b> ${f.discrepancyNote}</span>
-              </div>
-            ` : ""}
-
-            <!-- Officer Verification Action Controls -->
-            <div class="flex flex-wrap items-center justify-end gap-2 pt-1">
-              <button type="button" data-action="cbs-verify" data-id="${f.id}" class="btn-ver-action px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white transition">
-                ✓ Reconcile to Bank-Confirmed Amount & Activate
-              </button>
-              <button type="button" data-action="flag-mismatch" data-id="${f.id}" class="btn-ver-action px-3 py-1.5 rounded-lg text-xs font-semibold bg-rose-600 hover:bg-rose-700 text-white transition">
-                ⚑ Flag Discrepancy & Notify Institution
-              </button>
-            </div>
-          </div>
-        `;
-      }).join("");
-
-      container.querySelectorAll(".btn-open-passport-ver").forEach((btn) => {
-        btn.addEventListener("click", () => openFdrPassportModal(btn.getAttribute("data-passport-fdr")));
-      });
-
-      container.querySelectorAll(".btn-ver-action").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const id = btn.getAttribute("data-id");
-          const action = btn.getAttribute("data-action");
-          handleOfficerVerificationAction(id, action);
-        });
-      });
-
-      // Populate Manual Verification Select
-      const manualSel = document.getElementById("manualVerifyFdrSelect");
-      if (manualSel) {
-        manualSel.innerHTML = appState.fdrs.map(f => `<option value="${f.id}">${f.id} • ${f.fdrNumber} (${f.verificationBadge})</option>`).join("");
+      if (hasMismatch) {
+        vBadge2.textContent = '1 DISCREPANCY';
+        vBadge2.className = 'text-[10px] px-1.5 py-0.5 rounded bg-red-200 text-red-900 font-bold';
+        gateMsg.textContent = 'Discrepancy detected: Declared ₹50,00,000 vs Scanned ₹35,00,000.';
+        gateMsg.className = 'text-red-600 font-semibold ml-1';
+      } else {
+        vBadge2.textContent = 'PASSED';
+        vBadge2.className = 'text-[10px] px-1.5 py-0.5 rounded bg-emerald-200 text-emerald-900 font-bold';
+        gateMsg.textContent = activeIntake.bankConfirmed
+          ? 'All 3 verification tiers satisfied. Ready to commit to Master Registry.'
+          : 'Stage 2 Screened. Awaiting or ready to record Bank Confirmation.';
+        gateMsg.className = 'text-emerald-700 font-semibold ml-1';
       }
 
-      // Render Fraud & Anomaly Rule Engine Checks (All 6 rules from PDF pages 2-3)
-      renderFraudRulesEngine();
-    }
-
-    function renderFraudRulesEngine() {
-      const fdrs = appState.fdrs;
-      // 1. Duplicate FDR number across institutions
-      const fdrNumCounts = {};
-      fdrs.forEach(f => { fdrNumCounts[f.fdrNumber] = (fdrNumCounts[f.fdrNumber] || 0) + 1; });
-      const dupFdr = Object.entries(fdrNumCounts).find(([, count]) => count > 1);
-
-      // 2. Same document hash uploaded by multiple institutions
-      const hashCounts = {};
-      fdrs.forEach(f => { hashCounts[f.docHash] = (hashCounts[f.docHash] || 0) + 1; });
-      const dupHash = Object.entries(hashCounts).find(([, count]) => count > 1);
-
-      // 3. Maturity date earlier than issue date
-      const invalidDates = fdrs.filter(f => new Date(f.maturityDate) <= new Date(f.issueDate));
-
-      // 4. Amount mismatch / changed after initial verification
-      const amountMismatches = fdrs.filter(f => f.claimedAmount !== f.ocrExtractedAmount || (f.bankConfirmedAmount !== null && f.claimedAmount !== f.bankConfirmedAmount));
-
-      // 5. Missing bank branch/IFSC or inconsistent institution identifiers
-      const missingIfsc = fdrs.filter(f => !f.ifsc || f.ifsc.trim().length < 8);
-
-      // 6. Repeated edits to financial fields after approval
-      const repeatedEdits = fdrs.filter(f => f.editCountAfterApproval > 0);
-
-      const rules = [
-        {
-          name: "Rule 1: Duplicate FDR Number Across Institutions",
-          passed: !dupFdr,
-          detail: dupFdr ? `Duplicate detected: ${dupFdr[0]}` : "0 duplicate FDR numbers across registry"
-        },
-        {
-          name: "Rule 2: Identical Document SHA-256 Hash Re-Upload",
-          passed: !dupHash,
-          detail: dupHash ? `Duplicate PDF hash detected` : "All uploaded PDF scans have unique SHA-256 hashes"
-        },
-        {
-          name: "Rule 3: Maturity Date Earlier Than Issue Date",
-          passed: invalidDates.length === 0,
-          detail: invalidDates.length ? `${invalidDates.length} invalid chronology record(s)` : "All instruments have valid positive tenure"
-        },
-        {
-          name: "Rule 4: Claimed vs. OCR / Bank Amount Discrepancy",
-          passed: amountMismatches.length === 0,
-          detail: amountMismatches.length ? `${amountMismatches.length} instrument(s) flagged (${amountMismatches.map(x => x.fdrNumber).join(", ")})` : "All claimed amounts match bank records"
-        },
-        {
-          name: "Rule 5: Missing Branch IFSC or Institution ID",
-          passed: missingIfsc.length === 0,
-          detail: missingIfsc.length ? `${missingIfsc.length} missing IFSC code(s)` : "100% IFSC & AICTE Institution IDs validated"
-        },
-        {
-          name: "Rule 6: Post-Approval Financial Field Edits",
-          passed: repeatedEdits.length === 0,
-          detail: repeatedEdits.length ? `${repeatedEdits.length} unauthorized post-approval edit attempt(s)` : "Zero post-approval mutations on locked instruments"
-        }
-      ];
-
-      document.getElementById("fraudRuleListContainer").innerHTML = rules.map(r => `
-        <div class="p-2.5 rounded-lg border ${r.passed ? 'bg-emerald-50/50 border-emerald-200' : 'bg-rose-50 border-rose-300'} flex items-start justify-between gap-2">
-          <div>
-            <p class="text-xs font-bold ${r.passed ? 'text-emerald-950' : 'text-rose-950'}">${r.name}</p>
-            <p class="text-[11px] ${r.passed ? 'text-emerald-700' : 'text-rose-700'} mt-0.5">${r.detail}</p>
-          </div>
-          <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase ${r.passed ? 'bg-emerald-200 text-emerald-900' : 'bg-rose-200 text-rose-900'}">
-            ${r.passed ? "PASS" : "FLAG"}
-          </span>
-        </div>
-      `).join("");
-    }
-
-    function handleOfficerVerificationAction(fdrId, action) {
-      const fdr = appState.fdrs.find(f => f.id === fdrId);
-      if (!fdr) return;
-
-      if (action === "cbs-verify") {
-        const reconciledAmt = fdr.ocrExtractedAmount || fdr.claimedAmount;
-        fdr.bankConfirmedAmount = reconciledAmt;
-        fdr.claimedAmount = reconciledAmt;
-        fdr.verificationBadge = "Bank-confirmed";
-        fdr.lifecycleStatus = fdr.daysToMaturity <= 90 ? "Nearing Maturity" : "Active";
-        fdr.discrepancyNote = null;
-        fdr.auditLog.push({
-          ts: nowIST(),
-          actor: "AICTE Verification Officer",
-          action: "Bank-Confirmed & Reconciled",
-          detail: `Reconciled instrument to Bank-confirmed amount ${formatINR(reconciledAmt)}. Status set to ${fdr.lifecycleStatus}.`,
-          hash: generateHashSnippet()
-        });
-        showToast("FDR Bank-Confirmed", `${fdr.fdrNumber} verified at ${formatINR(reconciledAmt)} and logged to immutable audit trail.`, "emerald");
-      } else if (action === "flag-mismatch") {
-        fdr.verificationBadge = "Mismatch";
-        fdr.lifecycleStatus = "Discrepancy-Flagged";
-        fdr.discrepancyNote = `Officer flagged discrepancy between claimed amount (${formatINR(fdr.claimedAmount)}) and verified scan (${formatINR(fdr.ocrExtractedAmount)}).`;
-        fdr.auditLog.push({
-          ts: nowIST(),
-          actor: "AICTE Verification Officer",
-          action: "Discrepancy Ticket Created",
-          detail: fdr.discrepancyNote,
-          hash: generateHashSnippet()
-        });
-        appState.alerts.unshift({
-          id: "ALT-" + Math.floor(100 + Math.random() * 900),
-          ts: nowIST(),
-          channel: "DISCREPANCY TICKET",
-          recipient: `${fdr.institutionId} (${fdr.institutionName})`,
-          severity: "RED",
-          title: `Discrepancy Ticket: ${fdr.fdrNumber}`,
-          message: fdr.discrepancyNote
-        });
-        showToast("Discrepancy Flagged", `Ticket dispatched to ${fdr.institutionName}.`, "rose");
+      if (activeIntake.bankConfirmed) {
+        vBadge3.textContent = 'CONFIRMED';
+        vBadge3.className = 'text-[10px] px-1.5 py-0.5 rounded bg-emerald-200 text-emerald-900 font-bold';
+      } else {
+        vBadge3.textContent = 'AWAITING';
+        vBadge3.className = 'text-[10px] px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-bold';
       }
-      renderAll();
     }
 
-    // ============================================================================
-    // TAB 3: SMART MATURITY & RENEWAL CONTROL TOWER
-    // ============================================================================
-    function renderControlTower() {
-      const expiringSoon = appState.fdrs.filter(f => f.daysToMaturity > 0 && f.daysToMaturity <= 90 && f.lifecycleStatus !== "Renewed");
-      const maturedUnrenewed = appState.fdrs.filter(f => f.daysToMaturity <= 0 && f.lifecycleStatus === "Matured");
-      const renewedLinked = appState.fdrs.filter(f => f.parentFdrId !== null);
-      const mismatched = appState.fdrs.filter(f => f.verificationBadge === "Mismatch" || f.lifecycleStatus === "Discrepancy-Flagged");
-
-      const signals = [
-        {
-          signal: "FDR expires in 90 / 60 / 30 days",
-          action: "Notify institution & assigned AICTE officer via Email/SMS/Portal",
-          count: expiringSoon.length,
-          key: "REMIND_EXPIRING"
-        },
-        {
-          signal: "Renewal not uploaded after maturity",
-          action: "Escalate to Regulation Bureau & mark Red Compliance Risk",
-          count: maturedUnrenewed.length,
-          key: "ESCALATE_MATURED"
-        },
-        {
-          signal: "Replacement / Renewal FDR submitted",
-          action: "Link to parent instrument in FDR Passport & preserve history",
-          count: renewedLinked.length,
-          key: "LINK_RENEWAL"
-        },
-        {
-          signal: "Amount / Date mismatch detected",
-          action: "Create discrepancy ticket & block auto-approval",
-          count: mismatched.length,
-          key: "TICKET_MISMATCH"
-        },
-        {
-          signal: "Release / Refund requested",
-          action: "Trigger 5-stage SLA-tracked approval & public status tracker",
-          count: appState.refundCases.length,
-          key: "VIEW_REFUNDS"
-        }
-      ];
-
-      const signalBody = document.getElementById("controlTowerSignalBody");
-      signalBody.innerHTML = signals.map(s => `
-        <tr class="hover:bg-slate-50">
-          <td class="py-3 px-4 font-bold text-slate-900">${s.signal}</td>
-          <td class="py-3 px-3 text-slate-600">${s.action}</td>
-          <td class="py-3 px-3">
-            <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">${s.count} record(s)</span>
-          </td>
-          <td class="py-3 px-4 text-right">
-            <button type="button" data-signal-key="${s.key}" class="btn-run-signal px-2.5 py-1 rounded text-xs font-semibold bg-slate-900 hover:bg-indigo-600 text-white transition">
-              Trigger Action
-            </button>
-          </td>
-        </tr>
-      `).join("");
-
-      signalBody.querySelectorAll(".btn-run-signal").forEach(btn => {
-        btn.addEventListener("click", () => {
-          triggerControlTowerSignal(btn.getAttribute("data-signal-key"));
-        });
-      });
-
-      // Render Alert Dispatch Log
-      const logContainer = document.getElementById("alertDispatchLogContainer");
-      logContainer.innerHTML = appState.alerts.map(a => {
-        const badgeCls = a.severity === "RED"
-          ? "bg-rose-100 text-rose-800 border-rose-300"
-          : a.severity === "AMBER"
-            ? "bg-amber-100 text-amber-800 border-amber-300"
-            : "bg-emerald-100 text-emerald-800 border-emerald-300";
-        return `
-          <div class="p-3 rounded-lg border border-slate-200 bg-slate-50/70 space-y-1">
-            <div class="flex items-center justify-between gap-2">
-              <span class="px-2 py-0.5 rounded text-[10px] font-bold border ${badgeCls}">${a.channel}</span>
-              <span class="text-[10px] text-slate-400 mono">${a.ts}</span>
-            </div>
-            <p class="text-xs font-bold text-slate-900">${a.title}</p>
-            <p class="text-[11px] text-slate-600">${a.message}</p>
-            <p class="text-[10px] text-slate-500">To: ${a.recipient}</p>
-          </div>
-        `;
-      }).join("");
-
-      // Render Maturity Watchlist Table
-      const watchlist = appState.fdrs.filter(f => f.daysToMaturity <= 90 || f.lifecycleStatus === "Nearing Maturity" || f.lifecycleStatus === "Matured" || f.lifecycleStatus === "Renewed");
-      const watchBody = document.getElementById("maturityWatchlistBody");
-      watchBody.innerHTML = watchlist.map(f => `
-        <tr class="hover:bg-slate-50">
-          <td class="py-3 px-4 font-bold mono text-slate-900">
-            ${f.fdrNumber}
-            <div class="text-[10px] text-indigo-600">${f.passportId}</div>
-          </td>
-          <td class="py-3 px-3 font-medium text-slate-800">${f.institutionName}</td>
-          <td class="py-3 px-3 mono text-slate-700">${f.maturityDate}</td>
-          <td class="py-3 px-3">
-            <span class="px-2 py-0.5 rounded text-xs font-bold ${f.daysToMaturity < 0 ? 'bg-rose-100 text-rose-800' : 'bg-amber-100 text-amber-800'}">
-              ${f.daysToMaturity < 0 ? `${Math.abs(f.daysToMaturity)} days overdue` : `${f.daysToMaturity} days left`}
-            </span>
-          </td>
-          <td class="py-3 px-3">${getLifecycleBadgeHTML(f.lifecycleStatus)}</td>
-          <td class="py-3 px-4 text-right space-x-1.5">
-            ${f.lifecycleStatus !== "Renewed" && f.lifecycleStatus !== "Released" ? `
-              <button type="button" data-renew-fdr="${f.id}" class="btn-quick-renew px-2.5 py-1 rounded text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white transition">
-                + Upload Linked Renewal
-              </button>
-            ` : `<span class="text-xs text-emerald-700 font-semibold">Renewed by ${f.renewedByFdrId || "Linked Instrument"}</span>`}
-            <button type="button" data-passport-fdr="${f.id}" class="btn-watch-passport px-2 py-1 rounded text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700">
-              Passport
-            </button>
-          </td>
-        </tr>
-      `).join("");
-
-      watchBody.querySelectorAll(".btn-quick-renew").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const parentId = btn.getAttribute("data-renew-fdr");
-          prefillRenewalForParent(parentId);
-        });
-      });
-
-      watchBody.querySelectorAll(".btn-watch-passport").forEach(btn => {
-        btn.addEventListener("click", () => openFdrPassportModal(btn.getAttribute("data-passport-fdr")));
-      });
+    function acceptAllOCR() {
+      activeIntake.declaredAmount = activeIntake.ocrAmount;
+      renderIntake();
+      addAudit('SCRUTINY-OFF-12', `Reconciled declared principal to OCR value (${formatINR(activeIntake.ocrAmount)}) for FDR ${activeIntake.fdrNo}`);
+      showToast('Reconciled portal declaration with scanned FDR receipt');
     }
 
-    function triggerControlTowerSignal(signalKey) {
-      if (signalKey === "REMIND_EXPIRING") {
-        appState.alerts.unshift({
-          id: "ALT-" + Math.floor(100 + Math.random() * 900),
-          ts: nowIST(),
-          channel: "EMAIL + SMS + PORTAL",
-          recipient: "INST-102 (Vidya Bharati College of Pharmacy) & Nodal Officer",
-          severity: "AMBER",
-          title: "Automated 30-Day Maturity Reminder Dispatched",
-          message: "PNB-FDR-2018-55190 (₹15.0L) matures on 2026-11-20. Please upload renewed FDR to maintain Green Compliance Score."
-        });
-        showToast("Maturity Reminder Sent", "Multi-channel reminder dispatched to INST-102 and assigned Regulation Officer.", "amber");
-      } else if (signalKey === "ESCALATE_MATURED") {
-        appState.alerts.unshift({
-          id: "ALT-" + Math.floor(100 + Math.random() * 900),
-          ts: nowIST(),
-          channel: "BUREAU ESCALATION",
-          recipient: "AICTE Regulation Bureau Director & INST-103",
-          severity: "RED",
-          title: "Compliance Risk Escalated: Overdue Matured FDR",
-          message: "CNRB-FDR-2018-10294 matured without renewal. Institution Deposit Compliance Score adjusted to RED."
-        });
-        showToast("Escalation Triggered", "Matured unrenewed FDR escalated to AICTE Regulation Bureau.", "rose");
-      } else if (signalKey === "LINK_RENEWAL") {
-        prefillRenewalForParent("FDR-2018-042");
+    function raiseDiscrepancyQuery() {
+      addAudit('SCRUTINY-OFF-12', `Issued Deficiency Memo to ${activeIntake.instName} for FDR ${activeIntake.fdrNo}`);
+      showToast(`Deficiency Memo dispatched to ${activeIntake.instName}`, '⚠️');
+    }
+
+    function markBankConfirmed() {
+      activeIntake.bankConfirmed = true;
+      renderIntake();
+      addAudit('CBS-BRIDGE', `Recorded Bank Confirmation for FDR ${activeIntake.fdrNo} (${activeIntake.bank})`);
+      showToast('Stage 3: Bank Confirmation recorded for ' + activeIntake.fdrNo, '🏦');
+    }
+
+    function commitIntakeToLedger() {
+      if (activeIntake.declaredAmount !== activeIntake.ocrAmount) {
+        showToast('Please reconcile the principal amount discrepancy before approving.', '⚠️');
         return;
-      } else if (signalKey === "TICKET_MISMATCH") {
-        appState.activeTab = "verification";
-        showToast("Verification Queue Opened", "Showing flagged amount/date mismatch tickets.", "indigo");
-      } else if (signalKey === "VIEW_REFUNDS") {
-        appState.activeTab = "refunds";
-        showToast("Release/Refund Tracker Opened", "Viewing SLA-tracked release/refund applications.", "indigo");
       }
-      renderAll();
-    }
-
-    function prefillRenewalForParent(parentId) {
-      const parent = appState.fdrs.find(f => f.id === parentId) || appState.fdrs[1];
-      appState.activeTab = "institution";
-      document.getElementById("formInstitutionId").value = parent.institutionId;
-      document.getElementById("formSubmissionType").value = "RENEWAL";
-      document.getElementById("parentFdrSelectWrapper").classList.remove("hidden");
-      renderParentFdrDropdown();
-      document.getElementById("formParentFdrId").value = parent.id;
-      document.getElementById("formBankName").value = parent.bankName;
-      document.getElementById("formIfsc").value = parent.ifsc;
-      document.getElementById("formFdrNumber").value = parent.fdrNumber.replace("2018", "2026-REN");
-      document.getElementById("formClaimedAmount").value = parent.claimedAmount;
-      document.getElementById("formOcrAmount").value = parent.claimedAmount;
-      document.getElementById("formIssueDate").value = "2026-10-24";
-      document.getElementById("formMaturityDate").value = "2034-10-24";
-      renderAll();
-      showToast("Renewal Form Pre-Filled", `Ready to link replacement FDR to parent ${parent.fdrNumber}. Click Submit to link.`, "indigo");
-    }
-
-    // ============================================================================
-    // TAB 4: RELEASE / REFUND WORKFLOW WITH SLA TRACKING
-    // ============================================================================
-    function renderRefundWorkflow() {
-      const sel = document.getElementById("refundFdrSelect");
-      if (sel) {
-        sel.innerHTML = appState.fdrs.map(f => `
-          <option value="${f.id}">${f.id} • ${f.fdrNumber} (${f.institutionName.split(",")[0]} - ${formatINR(f.claimedAmount)})</option>
-        `).join("");
-      }
-
-      const container = document.getElementById("refundCasesContainer");
-      container.innerHTML = appState.refundCases.map(c => {
-        return `
-          <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-4">
-            <div class="flex flex-wrap items-center justify-between gap-2">
-              <div>
-                <div class="flex items-center gap-2">
-                  <span class="px-2 py-0.5 rounded text-xs font-mono font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">${c.id}</span>
-                  <span class="text-sm font-bold text-slate-900 mono">${c.fdrNumber}</span>
-                  <span class="text-xs font-bold text-emerald-700 mono">${formatINR(c.amount)}</span>
-                </div>
-                <p class="text-xs text-slate-600 mt-0.5">${c.institutionName} • NOC Ref: <span class="mono">${c.docRef}</span></p>
-                <p class="text-[11px] text-slate-500">Reason: ${c.reason}</p>
-              </div>
-
-              <div class="text-right">
-                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${c.stageIndex === 4 ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-amber-100 text-amber-800 border border-amber-300'}">
-                  SLA Aging: ${c.daysAging}d / ${c.slaLimitDays}d Limit
-                </span>
-                <p class="text-[10px] text-slate-400 mt-1 mono">Updated: ${c.updatedAt}</p>
-              </div>
-            </div>
-
-            <!-- 5-Stage Public-Style Status Tracker: Received → Under Verification → Approved → Payment Initiated → Closed -->
-            <div class="grid grid-cols-5 gap-1.5 pt-1">
-              ${REFUND_STAGES.map((stageName, idx) => {
-                const done = idx <= c.stageIndex;
-                const current = idx === c.stageIndex;
-                return `
-                  <div class="p-2 rounded-lg border text-center ${current ? 'bg-indigo-600 text-white border-indigo-600 font-bold shadow-sm' : done ? 'bg-emerald-50 text-emerald-800 border-emerald-300 font-semibold' : 'bg-slate-50 text-slate-400 border-slate-200'}">
-                    <div class="text-[10px] uppercase tracking-wider">${idx + 1}. ${stageName}</div>
-                  </div>
-                `;
-              }).join("")}
-            </div>
-
-            <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100">
-              <button type="button" data-passport-fdr="${c.fdrId}" class="btn-refund-passport text-xs font-semibold text-indigo-600 hover:underline">
-                View Linked FDR Passport & Audit Trail →
-              </button>
-              <div class="flex items-center gap-2">
-                ${c.stageIndex < 4 ? `
-                  <button type="button" data-advance-case="${c.id}" class="btn-advance-refund px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition">
-                    Approve Next Stage (${REFUND_STAGES[c.stageIndex + 1]}) →
-                  </button>
-                  <button type="button" data-complete-case="${c.id}" class="btn-complete-refund px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white transition">
-                    Fast-Forward to Closed ✓
-                  </button>
-                ` : `
-                  <span class="px-3 py-1 rounded-lg text-xs font-bold bg-emerald-100 text-emerald-900 border border-emerald-300">
-                    ✓ Case Closed & Lien Released
-                  </span>
-                `}
-              </div>
-            </div>
-          </div>
-        `;
-      }).join("");
-
-      container.querySelectorAll(".btn-refund-passport").forEach(btn => {
-        btn.addEventListener("click", () => openFdrPassportModal(btn.getAttribute("data-passport-fdr")));
-      });
-
-      container.querySelectorAll(".btn-advance-refund").forEach(btn => {
-        btn.addEventListener("click", () => advanceRefundCase(btn.getAttribute("data-advance-case"), false));
-      });
-
-      container.querySelectorAll(".btn-complete-refund").forEach(btn => {
-        btn.addEventListener("click", () => advanceRefundCase(btn.getAttribute("data-complete-case"), true));
-      });
-    }
-
-    function advanceRefundCase(caseId, closeImmediately) {
-      const c = appState.refundCases.find(x => x.id === caseId);
-      if (!c) return;
-      const fdr = appState.fdrs.find(f => f.id === c.fdrId);
-
-      if (closeImmediately) {
-        c.stageIndex = 4;
-      } else if (c.stageIndex < 4) {
-        c.stageIndex += 1;
-      }
-      c.updatedAt = nowIST();
-
-      const stageName = REFUND_STAGES[c.stageIndex];
-      if (fdr) {
-        if (c.stageIndex === 4) {
-          fdr.lifecycleStatus = "Released";
-        }
-        fdr.auditLog.push({
-          ts: nowIST(),
-          actor: "AICTE Regulation Bureau Officer",
-          action: `Release Workflow → ${stageName}`,
-          detail: `Case ${c.id} advanced to stage '${stageName}' (Ref: ${c.docRef}).`,
-          hash: generateHashSnippet()
+      const existingIdx = fdrLedger.findIndex(x => x.fdrNo === activeIntake.fdrNo);
+      const tier = activeIntake.bankConfirmed ? 'Bank-Confirmed' : 'Screened';
+      if (existingIdx === -1) {
+        fdrLedger.unshift({
+          id: 'FDR-' + (100 + fdrLedger.length + 1),
+          fdrNo: activeIntake.fdrNo,
+          inst: activeIntake.instName,
+          state: activeIntake.state,
+          bank: activeIntake.bank,
+          ifsc: 'SBIN0000691',
+          amount: activeIntake.ocrAmount,
+          issueDate: activeIntake.issueDate,
+          matDate: activeIntake.matDate,
+          verifyTier: tier,
+          status: 'Active',
+          parentId: null
         });
       }
-
-      showToast(`Release Stage: ${stageName}`, `Case ${c.id} (${c.fdrNumber}) updated to ${stageName}.`, "emerald");
-      renderAll();
+      updateKPIs();
+      addAudit('SCRUTINY-OFF-12', `Approved & committed FDR ${activeIntake.fdrNo} (${tier}) to Master Registry`);
+      showToast(`FDR ${activeIntake.fdrNo} committed to Master Registry!`);
+      switchTab('ledger');
     }
 
-    // ============================================================================
-    // TAB 5: COMPLIANCE SCORING & REGULATION BUREAU CHARTS
-    // ============================================================================
-    function renderComplianceDashboard() {
-      const institutions = [
-        { id: "INST-101", name: "Apex Institute of Technology, Indore", region: "Central" },
-        { id: "INST-102", name: "Vidya Bharati College of Pharmacy, Delhi", region: "North" },
-        { id: "INST-103", name: "Dakshin Regional School of Management, Bengaluru", region: "South" },
-        { id: "INST-104", name: "Eastern Frontier Engineering College, Bhubaneswar", region: "East" }
-      ];
+    function updateKPIs() {
+      let c30 = 0, c60 = 0, c90 = 0, cOver = 0;
+      fdrLedger.forEach(item => {
+        if (item.status === 'Superseded') return;
+        const d = daysUntil(item.matDate);
+        if (d < 0) cOver++;
+        else if (d <= 30) c30++;
+        else if (d <= 60) c60++;
+        else if (d <= 90) c90++;
+      });
+      document.getElementById('kpiTotal').textContent = fdrLedger.length;
+      document.getElementById('ledgerCountBadge').textContent = fdrLedger.length;
+      document.getElementById('kpi30').textContent = c30;
+      document.getElementById('kpi60').textContent = c60;
+      document.getElementById('kpi90').textContent = c90;
+      document.getElementById('kpiOverdue').textContent = cOver;
+      document.getElementById('kpiReleases').textContent = releaseRequests.filter(r => r.stage < 5).length;
+    }
 
-      const cardsHTML = institutions.map(inst => {
-        const instFdrs = appState.fdrs.filter(f => f.institutionId === inst.id);
-        let score = 95;
-        let band = "GREEN";
-        let summary = "Complete and bank-verified deposits; zero overdue renewals.";
+    function filterByBucket(bucket) {
+      switchTab('ledger');
+      document.getElementById('bucketFilter').value = bucket;
+      renderLedger();
+    }
 
-        const hasMismatch = instFdrs.some(f => f.verificationBadge === "Mismatch" || f.lifecycleStatus === "Discrepancy-Flagged");
-        const hasMatured = instFdrs.some(f => f.lifecycleStatus === "Matured");
-        const hasNearing = instFdrs.some(f => f.lifecycleStatus === "Nearing Maturity" || f.verificationBadge === "Manual review required");
+    function renderLedger() {
+      const q = (document.getElementById('searchInput')?.value || '').toLowerCase();
+      const bucket = document.getElementById('bucketFilter')?.value || 'ALL';
+      const vFilter = document.getElementById('verifyFilter')?.value || 'ALL';
 
-        if (hasMismatch || hasMatured) {
-          score = 54;
-          band = "RED";
-          summary = hasMismatch
-            ? "Action Required: Claimed vs. Bank amount mismatch pending reconciliation."
-            : "Action Required: Matured FDR awaiting renewal or closed release.";
-        } else if (hasNearing) {
-          score = 78;
-          band = "AMBER";
-          summary = "Minor Gap: Instrument nearing maturity (≤30 days) or awaiting manual bank letter.";
-        }
+      const filtered = fdrLedger.filter(item => {
+        const matchQ = !q || item.fdrNo.toLowerCase().includes(q) || item.inst.toLowerCase().includes(q) || item.bank.toLowerCase().includes(q);
+        const matchV = vFilter === 'ALL' || item.verifyTier === vFilter;
+        const d = daysUntil(item.matDate);
+        let matchB = true;
+        if (bucket === '30') matchB = d >= 0 && d <= 30;
+        else if (bucket === '60') matchB = d > 30 && d <= 60;
+        else if (bucket === '90') matchB = d > 60 && d <= 90;
+        else if (bucket === 'OVERDUE') matchB = d < 0;
+        return matchQ && matchV && matchB;
+      });
 
-        const styles = {
-          GREEN: { border: "border-emerald-300 bg-emerald-50/40", badge: "bg-emerald-600 text-white", text: "text-emerald-900" },
-          AMBER: { border: "border-amber-300 bg-amber-50/40", badge: "bg-amber-500 text-white", text: "text-amber-900" },
-          RED: { border: "border-rose-300 bg-rose-50/40", badge: "bg-rose-600 text-white", text: "text-rose-900" }
-        }[band];
+      document.getElementById('ledgerTableBody').innerHTML = filtered.map(item => {
+        const d = daysUntil(item.matDate);
+        let horizonBadge = `<span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-semibold">${d} days</span>`;
+        if (d < 0) horizonBadge = `<span class="px-2 py-0.5 rounded bg-rose-100 text-rose-800 font-bold">Overdue (${Math.abs(d)}d)</span>`;
+        else if (d <= 30) horizonBadge = `<span class="px-2 py-0.5 rounded bg-red-100 text-red-800 font-bold">Critical (${d}d)</span>`;
+        else if (d <= 60) horizonBadge = `<span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-bold">${d} days</span>`;
+        else if (d <= 90) horizonBadge = `<span class="px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-bold">${d} days</span>`;
+
+        const tierColors = {
+          'Bank-Confirmed': 'bg-emerald-100 text-emerald-800 border-emerald-300',
+          'Screened': 'bg-blue-100 text-blue-800 border-blue-300',
+          'Extracted': 'bg-amber-100 text-amber-800 border-amber-300'
+        };
 
         return `
-          <div class="rounded-xl border p-4 ${styles.border} flex flex-col justify-between gap-3">
-            <div class="flex items-start justify-between gap-2">
-              <div>
-                <span class="text-[11px] font-mono font-bold text-slate-500">${inst.id} • ${inst.region} Region</span>
-                <h4 class="text-sm font-bold text-slate-900">${inst.name}</h4>
-              </div>
-              <div class="text-right">
-                <span class="px-2.5 py-1 rounded-lg text-xs font-extrabold ${styles.badge}">
-                  ${band} • ${score}/100
-                </span>
-              </div>
-            </div>
-            <p class="text-xs ${styles.text} font-medium">${summary}</p>
-            <div class="flex items-center justify-between text-[11px] text-slate-600 pt-2 border-t border-slate-200/80">
-              <span>Tracked Instruments: <b>${instFdrs.length}</b></span>
-              <span>Total Deposit: <b>${formatINR(instFdrs.reduce((s, x) => s + x.claimedAmount, 0))}</b></span>
-            </div>
-          </div>
+          <tr class="hover:bg-slate-50 transition">
+            <td class="py-3 px-3">
+              <div class="font-bold mono text-slate-900">${item.fdrNo}</div>
+              <div class="text-[11px] text-slate-500">${item.bank} • ${item.ifsc}</div>
+            </td>
+            <td class="py-3 px-3">
+              <div class="font-semibold text-slate-900">${item.inst}</div>
+              <div class="text-[11px] text-slate-500">${item.state}</div>
+            </td>
+            <td class="py-3 px-3 font-bold mono text-slate-900">${formatINR(item.amount)}</td>
+            <td class="py-3 px-3 mono text-slate-700">${item.matDate}</td>
+            <td class="py-3 px-3">${horizonBadge}</td>
+            <td class="py-3 px-3">
+              <span class="px-2 py-0.5 rounded border text-[11px] font-bold ${tierColors[item.verifyTier]}">${item.verifyTier}</span>
+            </td>
+            <td class="py-3 px-3 font-semibold text-slate-700">${item.status}</td>
+            <td class="py-3 px-3 text-right space-x-1">
+              <button onclick="openRenewalFor('${item.id}')" class="px-2.5 py-1 rounded bg-purple-50 hover:bg-purple-100 text-purple-700 font-semibold">Chain / Renew</button>
+            </td>
+          </tr>
         `;
-      }).join("");
-
-      document.getElementById("complianceScorecardsContainer").innerHTML = cardsHTML;
+      }).join('');
     }
 
-    function renderCharts() {
-      if (typeof Chart === "undefined") return;
+    function exportRegistryCSV() {
+      const headers = ['Registry_ID', 'FDR_Number', 'Institution', 'State', 'Bank', 'IFSC', 'Principal_INR', 'Issue_Date', 'Maturity_Date', 'Verification_Tier', 'Status'];
+      const rows = fdrLedger.map(r => [r.id, r.fdrNo, `"${r.inst}"`, r.state, `"${r.bank}"`, r.ifsc, r.amount, r.issueDate, r.matDate, r.verifyTier, r.status].join(','));
+      const csv = [headers.join(','), ...rows].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'AICTE_Master_FDR_Registry_FY2026.csv';
+      a.click();
+      addAudit('EXPORT-SERVICE', 'Exported Master FDR Registry CSV snapshot');
+      showToast('Downloaded AICTE_Master_FDR_Registry_FY2026.csv', '⬇');
+    }
 
-      const statusLabels = ["Active", "Nearing Maturity", "Matured", "Renewed", "Under Review", "Discrepancy-Flagged", "Released"];
-      const statusCounts = statusLabels.map(l => appState.fdrs.filter(f => f.lifecycleStatus === l).length);
+    function triggerBulkAlerts() {
+      addAudit('NOTIFICATION-ENGINE', 'Dispatched 90/60/30-day maturity renewal notices to 5 institutions via Email & SMS');
+      showToast('Dispatched 90/60/30-day renewal notices to 5 institutions!', '🔔');
+    }
 
-      const ctx1 = document.getElementById("chartStatusBreakdown");
-      if (ctx1) {
-        if (statusChartInstance) statusChartInstance.destroy();
-        statusChartInstance = new Chart(ctx1, {
-          type: "doughnut",
-          data: {
-            labels: statusLabels,
-            datasets: [{
-              data: statusCounts,
-              backgroundColor: ["#10b981", "#f59e0b", "#ef4444", "#6366f1", "#0ea5e9", "#be123c", "#0d9488"],
-              borderWidth: 1
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: { position: "right", labels: { boxWidth: 12, font: { size: 11 } } }
-            }
-          }
-        });
+    function openRenewalFor(id) {
+      switchTab('renewal');
+      const sel = document.getElementById('chainInstituteSelect');
+      sel.value = id;
+      renderRenewalChain();
+    }
+
+    function renderRenewalChain() {
+      const sel = document.getElementById('chainInstituteSelect');
+      if (!sel.innerHTML) {
+        sel.innerHTML = fdrLedger.map(x => `<option value="${x.id}">${x.inst} (${x.fdrNo})</option>`).join('');
+        sel.value = 'FDR-105';
       }
+      const item = fdrLedger.find(x => x.id === sel.value) || fdrLedger[0];
+      document.getElementById('renewParentId').value = `${item.fdrNo} (${item.inst})`;
 
-      const regions = ["Central", "North", "South", "East"];
-      const regionAmounts = regions.map(r => {
-        const sum = appState.fdrs.filter(f => f.region === r).reduce((acc, x) => acc + (x.claimedAmount || 0), 0);
-        return Number((sum / 100000).toFixed(2));
+      const hist = item.history || [];
+      let html = '';
+      hist.forEach((h, idx) => {
+        html += `
+          <div class="p-4 rounded-xl border border-slate-300 bg-slate-100 relative">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase px-2 py-0.5 rounded bg-slate-300 text-slate-800">Historical Node #${idx + 1} • ${h.status}</span>
+              <span class="mono text-xs text-slate-600">${h.period}</span>
+            </div>
+            <div class="mt-2 flex items-center justify-between">
+              <div class="font-bold mono text-sm text-slate-800">FDR No: ${h.fdrNo}</div>
+              <div class="font-bold mono text-sm text-slate-700">${formatINR(h.amount)}</div>
+            </div>
+          </div>
+          <div class="flex justify-center my-1 text-purple-600 font-bold text-sm">↓ Linked Continuity Renewal</div>
+        `;
       });
 
-      const ctx2 = document.getElementById("chartRegionalCorpus");
-      if (ctx2) {
-        if (regionalChartInstance) regionalChartInstance.destroy();
-        regionalChartInstance = new Chart(ctx2, {
-          type: "bar",
-          data: {
-            labels: regions.map(r => r + " Region"),
-            datasets: [{
-              label: "Security Deposit Corpus (₹ Lakhs)",
-              data: regionAmounts,
-              backgroundColor: "#4f46e5",
-              borderRadius: 6
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              y: { beginAtZero: true }
-            }
-          }
-        });
-      }
-    }
-
-    // ============================================================================
-    // IDEA #1: DIGITAL "FDR PASSPORT" MODAL (QR ID, Timeline, Side-by-Side Renewal, Immutable Log)
-    // ============================================================================
-    function openFdrPassportModal(fdrId) {
-      const fdr = appState.fdrs.find(f => f.id === fdrId);
-      if (!fdr) return;
-
-      const parentFdr = fdr.parentFdrId ? appState.fdrs.find(p => p.id === fdr.parentFdrId) : null;
-      const childFdr = fdr.renewedByFdrId ? appState.fdrs.find(c => c.id === fdr.renewedByFdrId) : null;
-
-      document.getElementById("modalPassportId").textContent = fdr.passportId;
-      document.getElementById("modalPassportTitle").textContent = `Digital FDR Passport • ${fdr.fdrNumber}`;
-      document.getElementById("modalPassportSubtitle").textContent = `${fdr.institutionName} (${fdr.bankName})`;
-
-      const lifecycleSteps = [
-        { label: "Submitted", active: true },
-        { label: "Verified", active: fdr.verificationBadge === "Bank-confirmed" },
-        { label: "Active", active: ["Active", "Nearing Maturity", "Matured", "Renewed", "Released"].includes(fdr.lifecycleStatus) },
-        { label: "Nearing Maturity", active: ["Nearing Maturity", "Matured", "Renewed", "Released"].includes(fdr.lifecycleStatus) },
-        { label: "Renewed / Replaced", active: fdr.lifecycleStatus === "Renewed" || Boolean(fdr.parentFdrId) },
-        { label: "Released / Refunded", active: ["Released", "Refunded"].includes(fdr.lifecycleStatus) }
-      ];
-
-      const body = document.getElementById("modalPassportBody");
-      body.innerHTML = `
-        <!-- Top Identity Card + Simulated SVG QR Code -->
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
-          <div class="md:col-span-9 space-y-2">
-            <div class="flex flex-wrap items-center gap-2">
-              ${getVerificationBadgeHTML(fdr.verificationBadge)}
-              ${getLifecycleBadgeHTML(fdr.lifecycleStatus)}
-              <span class="text-xs font-mono text-slate-500">Document SHA-256: ${fdr.docHash}</span>
-            </div>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 text-xs">
-              <div>
-                <span class="text-slate-400 block text-[10px] uppercase font-bold">Claimed Amount</span>
-                <span class="font-bold mono text-slate-900">${formatINR(fdr.claimedAmount)}</span>
-              </div>
-              <div>
-                <span class="text-slate-400 block text-[10px] uppercase font-bold">Bank-Confirmed</span>
-                <span class="font-bold mono text-emerald-700">${formatINR(fdr.bankConfirmedAmount)}</span>
-              </div>
-              <div>
-                <span class="text-slate-400 block text-[10px] uppercase font-bold">Issue → Maturity</span>
-                <span class="font-semibold mono text-slate-800">${fdr.issueDate} → ${fdr.maturityDate}</span>
-              </div>
-              <div>
-                <span class="text-slate-400 block text-[10px] uppercase font-bold">Joint Lien Holder</span>
-                <span class="font-semibold text-slate-800">${fdr.nominee}</span>
-              </div>
-            </div>
+      html += `
+        <div class="p-4 rounded-xl border-2 border-purple-500 bg-white shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase px-2 py-0.5 rounded bg-purple-100 text-purple-900">Current Active Custody Node • ${item.status}</span>
+            <span class="mono text-xs text-slate-600">${item.issueDate} → ${item.matDate}</span>
           </div>
-          <div class="md:col-span-3 flex flex-col items-center justify-center bg-white p-3 rounded-lg border border-slate-200">
-            <!-- Deterministic SVG QR Representation -->
-            <svg class="w-20 h-20 text-slate-900" viewBox="0 0 36 36" fill="currentColor">
-              <rect x="2" y="2" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2"/>
-              <rect x="5" y="5" width="4" height="4"/>
-              <rect x="24" y="2" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2"/>
-              <rect x="27" y="5" width="4" height="4"/>
-              <rect x="2" y="24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2"/>
-              <rect x="5" y="27" width="4" height="4"/>
-              <rect x="15" y="4" width="3" height="3"/><rect x="19" y="8" width="3" height="3"/>
-              <rect x="14" y="14" width="4" height="4"/><rect x="20" y="16" width="3" height="3"/>
-              <rect x="4" y="15" width="4" height="3"/><rect x="10" y="19" width="3" height="3"/>
-              <rect x="25" y="15" width="4" height="3"/><rect x="29" y="20" width="4" height="4"/>
-              <rect x="15" y="25" width="4" height="4"/><rect x="22" y="28" width="5" height="4"/>
-            </svg>
-            <span class="text-[10px] font-mono font-bold text-slate-600 mt-1">${fdr.passportId}</span>
-          </div>
-        </div>
-
-        <!-- Traceable Lifecycle State Machine Timeline -->
-        <div>
-          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">FDR Passport Lifecycle State Timeline</h3>
-          <div class="grid grid-cols-2 sm:grid-cols-6 gap-2">
-            ${lifecycleSteps.map((st, i) => `
-              <div class="p-2.5 rounded-lg border text-center ${st.active ? 'bg-indigo-50 border-indigo-300 text-indigo-900 font-bold' : 'bg-slate-50 border-slate-200 text-slate-400'}">
-                <div class="text-[10px] uppercase">${i + 1}. ${st.label}</div>
-              </div>
-            `).join("")}
-          </div>
-        </div>
-
-        <!-- Side-by-Side Comparison of Original vs. Renewed FDR (When Linked) -->
-        <div>
-          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Side-by-Side Lineage Comparison (Original vs. Renewed FDR)</h3>
-          ${(parentFdr || childFdr) ? `
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-              <div class="p-3.5 rounded-xl border border-slate-300 bg-slate-50">
-                <span class="text-[10px] font-bold uppercase text-slate-500">Original / Parent Instrument</span>
-                <p class="text-sm font-bold mono mt-1">${(parentFdr || fdr).fdrNumber}</p>
-                <p class="text-slate-600 mt-1">Passport: <span class="mono">${(parentFdr || fdr).passportId}</span></p>
-                <p class="text-slate-600">Amount: <b>${formatINR((parentFdr || fdr).claimedAmount)}</b></p>
-                <p class="text-slate-600">Tenure: ${(parentFdr || fdr).issueDate} → ${(parentFdr || fdr).maturityDate}</p>
-              </div>
-              <div class="p-3.5 rounded-xl border border-indigo-300 bg-indigo-50/40">
-                <span class="text-[10px] font-bold uppercase text-indigo-700">Linked Renewal / Replacement Instrument</span>
-                <p class="text-sm font-bold mono mt-1">${(childFdr || fdr).fdrNumber}</p>
-                <p class="text-slate-600 mt-1">Passport: <span class="mono">${(childFdr || fdr).passportId}</span></p>
-                <p class="text-slate-600">Amount: <b>${formatINR((childFdr || fdr).claimedAmount)}</b></p>
-                <p class="text-slate-600">New Tenure: ${(childFdr || fdr).issueDate} → ${(childFdr || fdr).maturityDate}</p>
-              </div>
+          <div class="mt-2 flex items-center justify-between">
+            <div>
+              <div class="font-extrabold mono text-base text-slate-900">FDR No: ${item.fdrNo}</div>
+              <div class="text-xs text-slate-500">${item.bank} • ${item.verifyTier}</div>
             </div>
-          ` : `
-            <div class="p-3 rounded-lg border border-dashed border-slate-300 text-xs text-slate-500 flex items-center justify-between">
-              <span>No linked renewal instrument yet for ${fdr.fdrNumber}.</span>
-              <button type="button" id="btnModalLinkRenewal" class="px-2.5 py-1 rounded bg-indigo-600 text-white font-semibold">
-                + Upload Linked Renewal FDR
-              </button>
-            </div>
-          `}
-        </div>
-
-        <!-- Immutable Cryptographic Audit Event Log -->
-        <div>
-          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Immutable Cryptographic Event Log (Signed Audit Trail)</h3>
-          <div class="space-y-2">
-            ${fdr.auditLog.map(ev => `
-              <div class="p-3 rounded-lg border border-slate-200 bg-white flex flex-wrap items-center justify-between gap-2 text-xs">
-                <div>
-                  <span class="font-bold text-slate-900">${ev.action}</span>
-                  <span class="text-slate-500">by <b>${ev.actor}</b></span>
-                  <p class="text-slate-600 mt-0.5">${ev.detail}</p>
-                </div>
-                <div class="text-right mono text-[11px] text-slate-500">
-                  <div>${ev.ts}</div>
-                  <div class="text-indigo-600">Sig: ${ev.hash}</div>
-                </div>
-              </div>
-            `).join("")}
+            <div class="font-extrabold mono text-base text-purple-900">${formatINR(item.amount)}</div>
           </div>
         </div>
       `;
-
-      const linkBtn = document.getElementById("btnModalLinkRenewal");
-      if (linkBtn) {
-        linkBtn.addEventListener("click", () => {
-          document.getElementById("fdrPassportModal").classList.add("hidden");
-          prefillRenewalForParent(fdr.id);
-        });
-      }
-
-      document.getElementById("fdrPassportModal").classList.remove("hidden");
+      document.getElementById('chainTimelineContainer').innerHTML = html;
     }
 
-    // ============================================================================
-    // INTERACTIVE 7-STEP HACKATHON DEMO WALKTHROUGH ENGINE (Pages 3-4 of PDF)
-    // ============================================================================
-    function executeDemoStep(stepNum) {
-      appState.currentDemoStep = stepNum;
-      const stepInfo = DEMO_STEPS.find(s => s.step === stepNum);
-      if (stepInfo) {
-        document.getElementById("demoStepDescription").textContent = `Active Demo Step ${stepNum}/7: ${stepInfo.title} — ${stepInfo.desc}`;
-      }
+    function executeRenewalLink() {
+      const selId = document.getElementById('chainInstituteSelect').value;
+      const item = fdrLedger.find(x => x.id === selId);
+      if (!item) return;
+      const newNo = document.getElementById('renewNewFdrNo').value.trim();
+      const newAmt = Number(document.getElementById('renewNewAmount').value);
+      const newIssue = document.getElementById('renewIssueDate').value;
+      const newMat = document.getElementById('renewMatDate').value;
 
-      if (stepNum === 1) {
-        // Step 1: Institution uploads an FDR
-        appState.activeRole = "INSTITUTION";
-        appState.activeTab = "institution";
-        loadPresetSample("MISMATCH");
-        showToast("Demo Step 1: Institution Uploads FDR", "Sample FDR scan loaded into the Institution Workspace. Click 'Submit FDR' or advance to Step 2.", "indigo");
-      } else if (stepNum === 2) {
-        // Step 2: OCR extracts fields; system flags one deliberate mismatch
-        appState.activeRole = "INSTITUTION";
-        appState.activeTab = "institution";
-        loadPresetSample("MISMATCH");
-        runSimulatedOcrBanner();
-        showToast("Demo Step 2: AI OCR Flags Deliberate Mismatch", "OCR extracted ₹30,00,000 (86% confidence) vs. Claimed ₹35,00,000. Auto-approval blocked; routed to human verification.", "amber");
-      } else if (stepNum === 3) {
-        // Step 3: Officer verifies the record and sees an audit trail
-        appState.activeRole = "OFFICER";
-        appState.activeTab = "verification";
-        handleOfficerVerificationAction("FDR-2026-001", "cbs-verify");
-        showToast("Demo Step 3: Officer Verifies & Logs Audit Trail", "Officer reconciled FDR-2026-001 with bank confirmation and recorded an immutable cryptographic audit entry.", "emerald");
-      } else if (stepNum === 4) {
-        // Step 4: Dashboard shows the FDR nearing maturity
-        appState.activeRole = "BUREAU";
-        appState.activeTab = "controltower";
-        showToast("Demo Step 4: Control Tower Surfaces Expiring FDR", "PNB-FDR-2018-55190 (27 days remaining) highlighted in the 90/60/30-day Maturity Watchlist.", "amber");
-      } else if (stepNum === 5) {
-        // Step 5: System sends a renewal reminder
-        appState.activeRole = "BUREAU";
-        appState.activeTab = "controltower";
-        triggerControlTowerSignal("REMIND_EXPIRING");
-      } else if (stepNum === 6) {
-        // Step 6: Institution uploads a renewal; system links it to the original FDR
-        appState.activeRole = "INSTITUTION";
-        appState.activeTab = "institution";
-        createLinkedRenewalDemoRecord();
-      } else if (stepNum === 7) {
-        // Step 7: Officer approves release/refund, and the case closes with a complete history
-        appState.activeRole = "OFFICER";
-        appState.activeTab = "refunds";
-        if (appState.refundCases.length > 0) {
-          advanceRefundCase(appState.refundCases[0].id, true);
-        }
-        showToast("Demo Step 7: Release Approved & Case Closed", "Case REL-2026-11 advanced to Closed and FDR Passport updated with full audit history.", "emerald");
-      }
+      if (!item.history) item.history = [];
+      item.history.push({
+        fdrNo: item.fdrNo,
+        period: `${item.issueDate} → ${item.matDate}`,
+        amount: item.amount,
+        status: 'Superseded (Renewed 2026)'
+      });
 
-      renderAll();
+      const oldNo = item.fdrNo;
+      item.fdrNo = newNo;
+      item.amount = newAmt;
+      item.issueDate = newIssue;
+      item.matDate = newMat;
+      item.status = 'Active (Renewed)';
+      item.verifyTier = 'Bank-Confirmed';
+
+      renderRenewalChain();
+      updateKPIs();
+      addAudit('RENEWAL-ENGINE', `Linked renewed FDR ${newNo} to parent ${oldNo} for ${item.inst} without overwriting custody history`);
+      showToast(`Linked ${newNo} to parent ${oldNo} in unbroken chain!`, '🔗');
     }
 
-    function createLinkedRenewalDemoRecord() {
-      const parent = appState.fdrs.find(f => f.id === "FDR-2018-042");
-      const existingRenewal = appState.fdrs.find(f => f.id === "FDR-2026-REN01");
-      if (!existingRenewal && parent) {
-        const newRenewal = {
-          id: "FDR-2026-REN01",
-          passportId: "AICTE-PASS-8821R",
-          institutionId: parent.institutionId,
-          institutionName: parent.institutionName,
-          region: parent.region,
-          bankName: parent.bankName,
-          ifsc: parent.ifsc,
-          fdrNumber: "PNB-FDR-2026-REN901",
-          claimedAmount: 1500000,
-          ocrExtractedAmount: 1500000,
-          bankConfirmedAmount: 1500000,
-          issueDate: "2026-10-24",
-          maturityDate: "2034-10-24",
-          daysToMaturity: 2922,
-          nominee: "Member Secretary, AICTE",
-          ocrConfidence: 99,
-          verificationBadge: "Bank-confirmed",
-          lifecycleStatus: "Active",
-          docHash: "sha256:1a99b44298fc1c149afbf4c8996fb92427ae41e882",
-          parentFdrId: parent.id,
-          renewedByFdrId: null,
-          editCountAfterApproval: 0,
-          discrepancyNote: null,
-          auditLog: [
-            { ts: nowIST(), actor: "INST-102 Nodal Officer", action: "Linked Renewal Uploaded", detail: `Uploaded replacement FDR linked to parent ${parent.fdrNumber} (${parent.id}).`, hash: generateHashSnippet() },
-            { ts: nowIST(), actor: "Lifecycle Engine", action: "Lineage Preserved", detail: `Parent instrument ${parent.id} marked Renewed; full history preserved in FDR Passport.`, hash: generateHashSnippet() }
-          ]
-        };
-        parent.lifecycleStatus = "Renewed";
-        parent.renewedByFdrId = newRenewal.id;
-        parent.auditLog.push({
-          ts: nowIST(),
-          actor: "Lifecycle Engine",
-          action: "Renewed by Linked Instrument",
-          detail: `Replaced by ${newRenewal.fdrNumber} (${newRenewal.passportId}).`,
-          hash: generateHashSnippet()
-        });
-        appState.fdrs.unshift(newRenewal);
-      }
-      showToast("Demo Step 6: Renewal Linked to Original FDR", "PNB-FDR-2026-REN901 linked to PNB-FDR-2018-55190. Opening Digital FDR Passport to compare Original vs. Renewed.", "indigo");
-      openFdrPassportModal("FDR-2026-REN01");
-    }
+    const STAGE_NAMES = [
+      '1. Request Received',
+      '2. Eligibility & Doc Check',
+      '3. Scrutiny & Clearances',
+      '4. Authority Approval',
+      '5. Release Recorded'
+    ];
 
-    // ============================================================================
-    // OCR SIMULATION & FORM HANDLERS
-    // ============================================================================
-    function loadPresetSample(mode) {
-      const subType = document.getElementById("formSubmissionType");
-      const wrapper = document.getElementById("parentFdrSelectWrapper");
-      if (mode === "MISMATCH") {
-        document.getElementById("formInstitutionId").value = "INST-101";
-        subType.value = "NEW";
-        wrapper.classList.add("hidden");
-        document.getElementById("formBankName").value = "State Bank of India";
-        document.getElementById("formIfsc").value = "SBIN0004821 • Indore Main";
-        document.getElementById("formFdrNumber").value = "SBI-FDR-2026-99412";
-        document.getElementById("formClaimedAmount").value = "3500000";
-        document.getElementById("formOcrAmount").value = "3000000";
-        document.getElementById("formIssueDate").value = "2026-10-01";
-        document.getElementById("formMaturityDate").value = "2034-10-01";
-      } else if (mode === "RENEWAL") {
-        prefillRenewalForParent("FDR-2018-042");
-      } else if (mode === "CLEAN") {
-        document.getElementById("formInstitutionId").value = "INST-102";
-        subType.value = "NEW";
-        wrapper.classList.add("hidden");
-        document.getElementById("formBankName").value = "HDFC Bank";
-        document.getElementById("formIfsc").value = "HDFC0000240 • New Delhi";
-        document.getElementById("formFdrNumber").value = "HDFC-FDR-2026-88301";
-        document.getElementById("formClaimedAmount").value = "2000000";
-        document.getElementById("formOcrAmount").value = "2000000";
-        document.getElementById("formIssueDate").value = "2026-10-20";
-        document.getElementById("formMaturityDate").value = "2034-10-20";
-      }
-      runSimulatedOcrBanner();
-    }
+    function renderReleases() {
+      document.getElementById('releaseCardsContainer').innerHTML = releaseRequests.map((req, idx) => {
+        const stepsHtml = STAGE_NAMES.map((name, sIdx) => {
+          const stepNum = sIdx + 1;
+          const done = stepNum <= req.stage;
+          const current = stepNum === req.stage;
+          return `
+            <div class="flex-1 p-2.5 rounded-lg border text-center ${done ? 'bg-emerald-50 border-emerald-400 text-emerald-900' : 'bg-slate-50 border-slate-200 text-slate-400'} ${current ? 'ring-2 ring-emerald-500 font-bold' : ''}">
+              <div class="text-[11px] font-semibold">${name}</div>
+              <div class="text-[10px] mt-0.5">${done ? '✓ Completed' : 'Pending'}</div>
+            </div>
+          `;
+        }).join('');
 
-    function runSimulatedOcrBanner() {
-      const claimed = Number(document.getElementById("formClaimedAmount").value || 0);
-      const ocrAmt = Number(document.getElementById("formOcrAmount").value || 0);
-      const fdrNo = document.getElementById("formFdrNumber").value;
-      const banner = document.getElementById("ocrExtractionBanner");
-      banner.classList.remove("hidden");
+        return `
+          <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="mono text-xs font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-800">${req.reqId}</span>
+                  <h4 class="text-sm font-bold text-slate-900">${req.inst}</h4>
+                </div>
+                <div class="text-xs text-slate-500 mt-0.5">FDR No: <strong class="mono text-slate-800">${req.fdrNo}</strong> • ${req.bank} • Principal: <strong class="mono text-slate-900">${formatINR(req.amount)}</strong></div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs px-2.5 py-1 rounded-full font-semibold ${req.daysElapsed > 12 ? 'bg-red-100 text-red-800' : 'bg-blue-50 text-blue-800'}">
+                  ⏱ SLA Elapsed: ${req.daysElapsed} / 15 Days
+                </span>
+                ${currentRole === 'officer' && req.stage < 5 ? `
+                  <button onclick="advanceReleaseStage(${idx})" class="text-xs px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold shadow-sm transition">
+                    Authorize Next Stage →
+                  </button>
+                ` : ''}
+                ${req.stage === 5 ? `<span class="text-xs px-3 py-1 rounded-lg bg-emerald-100 text-emerald-900 font-bold">✓ Encashment & Release Letter Issued</span>` : ''}
+              </div>
+            </div>
 
-      if (claimed !== ocrAmt) {
-        banner.className = "rounded-lg p-3.5 border border-rose-300 bg-rose-50 text-rose-950 space-y-1.5";
-        banner.innerHTML = `
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold uppercase tracking-wider text-rose-700">⚠ AI OCR + LLM Extraction Flagged Mismatch</span>
-            <span class="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-rose-200 text-rose-900">Confidence: 86% • Human Review Required</span>
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">${stepsHtml}</div>
+
+            <div class="bg-slate-50 rounded-lg p-2.5 border border-slate-200 text-[11px] text-slate-600 space-y-1 mono">
+              ${req.logs.map(l => `<div>• ${l}</div>`).join('')}
+            </div>
           </div>
-          <p class="text-xs">
-            Scanned PDF receipt <b>${fdrNo}</b> shows principal amount <b>${formatINR(ocrAmt)}</b>, whereas institution form claims <b>${formatINR(claimed)}</b>.
-            Per AICTE safety rules, financial instruments are never auto-approved; submission will be tagged <span class="font-bold">Discrepancy-Flagged</span>.
-          </p>
         `;
-      } else {
-        banner.className = "rounded-lg p-3.5 border border-emerald-300 bg-emerald-50 text-emerald-950 space-y-1.5";
-        banner.innerHTML = `
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold uppercase tracking-wider text-emerald-700">✓ AI OCR + LLM Extraction Matched All Fields</span>
-            <span class="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-emerald-200 text-emerald-900">Confidence: 98%</span>
-          </div>
-          <p class="text-xs">
-            Extracted Bank, IFSC, Receipt <b>${fdrNo}</b>, and Amount <b>${formatINR(ocrAmt)}</b> match the claimed form with zero tampering indicators.
-          </p>
-        `;
+      }).join('');
+    }
+
+    function advanceReleaseStage(idx) {
+      const req = releaseRequests[idx];
+      if (req.stage < 5) {
+        req.stage++;
+        const stageLabel = STAGE_NAMES[req.stage - 1];
+        req.logs.push(`2026-10-25 14:22 — ${stageLabel} authorized by Competent Authority (${currentGPS})`);
+        addAudit('AUTHORITY-DESK', `Advanced ${req.reqId} (FDR ${req.fdrNo}) to ${stageLabel}`);
+        renderReleases();
+        updateKPIs();
+        showToast(`${req.reqId} authorized for ${stageLabel}`);
       }
     }
 
-    // ============================================================================
-    // EVENT LISTENERS INITIALIZATION
-    // ============================================================================
-    window.addEventListener("DOMContentLoaded", () => {
-      // Role switch buttons
-      document.getElementById("roleBtnInstitution").addEventListener("click", () => {
-        appState.activeRole = "INSTITUTION";
-        appState.activeTab = "institution";
-        renderAll();
-      });
-      document.getElementById("roleBtnOfficer").addEventListener("click", () => {
-        appState.activeRole = "OFFICER";
-        appState.activeTab = "verification";
-        renderAll();
-      });
-      document.getElementById("roleBtnBureau").addEventListener("click", () => {
-        appState.activeRole = "BUREAU";
-        appState.activeTab = "compliance";
-        renderAll();
-      });
+    function addAudit(actor, action) {
+      const now = new Date();
+      const ts = '2026-10-25 ' + now.toTimeString().split(' ')[0];
+      const hash = Math.random().toString(16).substring(2, 8) + '...' + Math.random().toString(16).substring(2, 6);
+      auditEvents.unshift({ ts, actor, action, hash });
+      document.getElementById('auditCountBadge').textContent = auditEvents.length;
+    }
 
-      // Reset Demo button
-      document.getElementById("btnResetDemo").addEventListener("click", () => {
-        const fresh = getInitialSeedState();
-        appState.fdrs = fresh.fdrs;
-        appState.alerts = fresh.alerts;
-        appState.refundCases = fresh.refundCases;
-        appState.currentDemoStep = 0;
-        appState.searchQuery = "";
-        appState.statusFilter = "ALL";
-        document.getElementById("globalSearchInput").value = "";
-        document.getElementById("globalStatusFilter").value = "ALL";
-        document.getElementById("ocrExtractionBanner").classList.add("hidden");
-        renderAll();
-        showToast("Prototype Data Reset", "Restored initial SIH26265 seed portfolio and audit logs.", "indigo");
-      });
+    function renderAuditAndExceptions() {
+      const exceptions = [
+        { title: 'Principal Amount Mismatch (₹50L vs ₹35L)', sub: 'Apex Institute of Technology • FDR 39941200841', sev: 'HIGH' },
+        { title: 'Overdue Unrenewed Instrument (20 Days Past Maturity)', sub: 'Vindhya College of Engineering • FDR PNB-2018-77102', sev: 'CRITICAL' },
+        { title: 'Pending Stage-3 Bank Confirmation', sub: 'Godavari Vidya Parishad • FDR 44910293812', sev: 'MEDIUM' }
+      ];
+      document.getElementById('exceptionList').innerHTML = exceptions.map(ex => `
+        <div class="p-3 rounded-xl border border-red-200 bg-red-50/60 flex items-center justify-between">
+          <div>
+            <div class="text-xs font-bold text-red-950">${ex.title}</div>
+            <div class="text-[11px] text-red-700 mt-0.5">${ex.sub}</div>
+          </div>
+          <span class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-red-200 text-red-900">${ex.sev}</span>
+        </div>
+      `).join('');
 
-      // Prev / Next Demo Step buttons
-      document.getElementById("btnNextDemoStep").addEventListener("click", () => {
-        const next = appState.currentDemoStep < 7 ? appState.currentDemoStep + 1 : 1;
-        executeDemoStep(next);
-      });
-      document.getElementById("btnPrevDemoStep").addEventListener("click", () => {
-        const prev = appState.currentDemoStep > 1 ? appState.currentDemoStep - 1 : 1;
-        executeDemoStep(prev);
-      });
+      document.getElementById('auditLogContainer').innerHTML = auditEvents.map(e => `
+        <div class="border-b border-slate-800 pb-2">
+          <div class="flex items-center justify-between text-[11px] text-slate-400">
+            <span>[${e.ts}] <strong class="text-emerald-400">${e.actor}</strong></span>
+            <span>HASH: ${e.hash}</span>
+          </div>
+          <div class="text-slate-200 mt-0.5">${e.action}</div>
+        </div>
+      `).join('');
+    }
 
-      // Workspace Nav Tabs
-      document.querySelectorAll(".nav-tab-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
-          appState.activeTab = btn.getAttribute("data-tab");
-          renderAll();
-        });
-      });
-
-      // Search & Filter
-      document.getElementById("globalSearchInput").addEventListener("input", (e) => {
-        appState.searchQuery = e.target.value;
-        renderInstitutionFdrTable();
-        renderVerificationWorkspace();
-      });
-      document.getElementById("globalStatusFilter").addEventListener("change", (e) => {
-        appState.statusFilter = e.target.value;
-        renderInstitutionFdrTable();
-        renderVerificationWorkspace();
-      });
-
-      // Preset OCR Sample Buttons
-      document.getElementById("btnSampleMismatch").addEventListener("click", () => loadPresetSample("MISMATCH"));
-      document.getElementById("btnSampleRenewal").addEventListener("click", () => loadPresetSample("RENEWAL"));
-      document.getElementById("btnSampleClean").addEventListener("click", () => loadPresetSample("CLEAN"));
-      document.getElementById("btnRunOcrCheck").addEventListener("click", () => runSimulatedOcrBanner());
-
-      // Submission Type toggle
-      document.getElementById("formSubmissionType").addEventListener("change", (e) => {
-        const wrapper = document.getElementById("parentFdrSelectWrapper");
-        if (e.target.value === "RENEWAL") {
-          wrapper.classList.remove("hidden");
-          renderParentFdrDropdown();
-        } else {
-          wrapper.classList.add("hidden");
-        }
-      });
-
-      // FDR Upload Form Submit
-      document.getElementById("fdrUploadForm").addEventListener("submit", (e) => {
-        e.preventDefault();
-        const instSelect = document.getElementById("formInstitutionId");
-        const instId = instSelect.value;
-        const instText = instSelect.options[instSelect.selectedIndex].text.split("•")[1].trim();
-        const subType = document.getElementById("formSubmissionType").value;
-        const parentId = subType === "RENEWAL" ? document.getElementById("formParentFdrId").value : null;
-        const bankName = document.getElementById("formBankName").value.trim();
-        const ifsc = document.getElementById("formIfsc").value.trim();
-        const fdrNumber = document.getElementById("formFdrNumber").value.trim();
-        const claimedAmount = Number(document.getElementById("formClaimedAmount").value);
-        const ocrAmount = Number(document.getElementById("formOcrAmount").value);
-        const issueDate = document.getElementById("formIssueDate").value;
-        const maturityDate = document.getElementById("formMaturityDate").value;
-        const nominee = document.getElementById("formNominee").value.trim();
-
-        const hasMismatch = claimedAmount !== ocrAmount;
-        const newId = "FDR-2026-" + Math.floor(100 + Math.random() * 899);
-        const passportId = "AICTE-PASS-" + Math.floor(1000 + Math.random() * 8999) + "X";
-        const diffDays = Math.round((new Date(maturityDate) - new Date("2026-10-24")) / (1000 * 60 * 60 * 24));
-
-        const newFdr = {
-          id: newId,
-          passportId,
-          institutionId: instId,
-          institutionName: instText,
-          region: instText.includes("North") ? "North" : instText.includes("South") ? "South" : instText.includes("East") ? "East" : "Central",
-          bankName,
-          ifsc,
-          fdrNumber,
-          claimedAmount,
-          ocrExtractedAmount: ocrAmount,
-          bankConfirmedAmount: hasMismatch ? null : ocrAmount,
-          issueDate,
-          maturityDate,
-          daysToMaturity: diffDays,
-          nominee,
-          ocrConfidence: hasMismatch ? 86 : 98,
-          verificationBadge: hasMismatch ? "Mismatch" : "Manual review required",
-          lifecycleStatus: hasMismatch ? "Discrepancy-Flagged" : "Under Review",
-          docHash: "sha256:" + Math.random().toString(16).slice(2) + Math.random().toString(16).slice(2),
-          parentFdrId: parentId,
-          renewedByFdrId: null,
-          editCountAfterApproval: 0,
-          discrepancyNote: hasMismatch ? `Claimed amount (${formatINR(claimedAmount)}) differs from AI OCR scan extraction (${formatINR(ocrAmount)}).` : null,
-          auditLog: [
-            { ts: nowIST(), actor: `${instId} Nodal Officer`, action: "FDR Uploaded", detail: `Submitted ${fdrNumber} (${subType}).`, hash: generateHashSnippet() },
-            { ts: nowIST(), actor: "AI OCR+LLM Pipeline", action: hasMismatch ? "Mismatch Flagged" : "Fields Validated", detail: hasMismatch ? `Claimed ${formatINR(claimedAmount)} vs Scan ${formatINR(ocrAmount)}.` : `Extracted fields match with 98% confidence.`, hash: generateHashSnippet() }
-          ]
-        };
-
-        if (parentId) {
-          const parent = appState.fdrs.find(f => f.id === parentId);
-          if (parent) {
-            parent.lifecycleStatus = "Renewed";
-            parent.renewedByFdrId = newId;
-            parent.auditLog.push({
-              ts: nowIST(),
-              actor: "Lifecycle Engine",
-              action: "Renewed by Replacement FDR",
-              detail: `Linked to replacement instrument ${fdrNumber} (${passportId}).`,
-              hash: generateHashSnippet()
-            });
-          }
-        }
-
-        appState.fdrs.unshift(newFdr);
-        runSimulatedOcrBanner();
-        renderAll();
-        showToast("FDR Minted with Digital Passport", `${fdrNumber} registered under ${passportId} (${newFdr.lifecycleStatus}).`, hasMismatch ? "amber" : "emerald");
-      });
-
-      // Manual Evidence Capture Button
-      document.getElementById("btnRecordManualEvidence").addEventListener("click", () => {
-        const fdrId = document.getElementById("manualVerifyFdrSelect").value;
-        const refNo = document.getElementById("manualVerifyRefInput").value.trim() || "BANK-CONF-2026";
-        const fdr = appState.fdrs.find(f => f.id === fdrId);
-        if (!fdr) return;
-        fdr.bankConfirmedAmount = fdr.ocrExtractedAmount;
-        fdr.claimedAmount = fdr.ocrExtractedAmount;
-        fdr.verificationBadge = "Bank-confirmed";
-        fdr.lifecycleStatus = fdr.daysToMaturity <= 90 ? "Nearing Maturity" : "Active";
-        fdr.discrepancyNote = null;
-        fdr.auditLog.push({
-          ts: nowIST(),
-          actor: "AICTE Verification Officer",
-          action: "Manual Bank Evidence Captured",
-          detail: `Verified via official bank confirmation ref '${refNo}'. Marked Bank-confirmed.`,
-          hash: generateHashSnippet()
-        });
-        renderAll();
-        showToast("Manual Bank Evidence Recorded", `${fdr.fdrNumber} marked Bank-confirmed with ref ${refNo}.`, "emerald");
-      });
-
-      // Control Tower buttons
-      document.getElementById("btnTriggerAllMaturityScans").addEventListener("click", () => {
-        triggerControlTowerSignal("REMIND_EXPIRING");
-      });
-      document.getElementById("btnSendRenewalReminderDemo").addEventListener("click", () => {
-        triggerControlTowerSignal("REMIND_EXPIRING");
-      });
-
-      // Refund Request Form Submit
-      document.getElementById("refundRequestForm").addEventListener("submit", (e) => {
-        e.preventDefault();
-        const fdrId = document.getElementById("refundFdrSelect").value;
-        const reason = document.getElementById("refundReasonSelect").value;
-        const docRef = document.getElementById("refundDocRef").value.trim();
-        const fdr = appState.fdrs.find(f => f.id === fdrId);
-        if (!fdr) return;
-
-        const newCase = {
-          id: "REL-2026-" + Math.floor(20 + Math.random() * 79),
-          fdrId: fdr.id,
-          fdrNumber: fdr.fdrNumber,
-          institutionName: fdr.institutionName,
-          amount: fdr.claimedAmount,
-          reason,
-          docRef,
-          stageIndex: 0,
-          daysAging: 1,
-          slaLimitDays: 15,
-          slaBreached: false,
-          updatedAt: nowIST()
-        };
-        fdr.auditLog.push({
-          ts: nowIST(),
-          actor: `${fdr.institutionId} Nodal Officer`,
-          action: "Release/Refund Requested",
-          detail: `Initiated release case ${newCase.id} (${reason}).`,
-          hash: generateHashSnippet()
-        });
-        appState.refundCases.unshift(newCase);
-        renderAll();
-        showToast("Release Request Initiated", `Case ${newCase.id} created with 15-day SLA tracker.`, "indigo");
-      });
-
-      // Close Passport Modal
-      document.getElementById("btnClosePassportModal").addEventListener("click", () => {
-        document.getElementById("fdrPassportModal").classList.add("hidden");
-      });
-      document.getElementById("fdrPassportModal").addEventListener("click", (e) => {
-        if (e.target.id === "fdrPassportModal") {
-          document.getElementById("fdrPassportModal").classList.add("hidden");
-        }
-      });
-
-      // Initial render
-      renderAll();
-    });
+    // Initialize Application
+    renderIntake();
+    updateKPIs();
   </script>
 </body>
 </html>
